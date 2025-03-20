@@ -1,0 +1,672 @@
+[
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ActorController",
+    "Method": "GetAllActors",
+    "RelativePath": "api/actors",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ActorController",
+    "Method": "CreateActor",
+    "RelativePath": "api/actors",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "actor",
+        "Type": "Booking_Movie_Tickets.Models.Movies.Actor",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ActorController",
+    "Method": "GetActorById",
+    "RelativePath": "api/actors/{actorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "actorId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ActorController",
+    "Method": "UpdateActor",
+    "RelativePath": "api/actors/{actorId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "actorId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "actor",
+        "Type": "Booking_Movie_Tickets.Models.Movies.Actor",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ActorController",
+    "Method": "DeleteActor",
+    "RelativePath": "api/actors/{actorId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "actorId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ActorController",
+    "Method": "GetActorsByMovieId",
+    "RelativePath": "api/actors/movie/{movieId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "movieId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AgeRatingController",
+    "Method": "GetAgeRatings",
+    "RelativePath": "api/age-ratings",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AgeRatingController",
+    "Method": "Create",
+    "RelativePath": "api/age-ratings",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ageRating",
+        "Type": "Booking_Movie_Tickets.DTOs.Movies.Request.AgeRatingRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AgeRatingController",
+    "Method": "GetById",
+    "RelativePath": "api/age-ratings/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AgeRatingController",
+    "Method": "Update",
+    "RelativePath": "api/age-ratings/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "ageRating",
+        "Type": "Booking_Movie_Tickets.DTOs.Movies.Request.AgeRatingRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AgeRatingController",
+    "Method": "Delete",
+    "RelativePath": "api/age-ratings/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.BookingController",
+    "Method": "ConfirmOrder",
+    "RelativePath": "api/bookings/confirm-order",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Booking_Movie_Tickets.DTOs.Seats.ConfirmOrderRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.BookingController",
+    "Method": "ReleaseSeats",
+    "RelativePath": "api/bookings/release-seats",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Booking_Movie_Tickets.DTOs.Seats.SelectSeatsRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.BookingController",
+    "Method": "ReserveSeats",
+    "RelativePath": "api/bookings/reserve-seats",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Booking_Movie_Tickets.DTOs.Seats.SelectSeatsRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.BookingController",
+    "Method": "GetSeatsByShowtime",
+    "RelativePath": "api/bookings/seats/{showtimeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "showtimeId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.BookingController",
+    "Method": "SelectSeats",
+    "RelativePath": "api/bookings/select-seats",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Booking_Movie_Tickets.DTOs.Seats.SelectSeatsRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.BookingController",
+    "Method": "GetMovieShowtimes",
+    "RelativePath": "api/bookings/showtimes/{movieId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "movieId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ExtrasController",
+    "Method": "GetAllExtras",
+    "RelativePath": "api/extras",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ExtrasController",
+    "Method": "GetExtraById",
+    "RelativePath": "api/extras/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ExtrasController",
+    "Method": "GetPrice",
+    "RelativePath": "api/extras/{id}/price",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.GenreController",
+    "Method": "GetAll",
+    "RelativePath": "api/genres",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.GenreController",
+    "Method": "Create",
+    "RelativePath": "api/genres",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "genre",
+        "Type": "Booking_Movie_Tickets.DTOs.Movies.Request.GenreRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.GenreController",
+    "Method": "GetById",
+    "RelativePath": "api/genres/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.GenreController",
+    "Method": "Update",
+    "RelativePath": "api/genres/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "genre",
+        "Type": "Booking_Movie_Tickets.DTOs.Movies.Request.GenreRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.GenreController",
+    "Method": "Delete",
+    "RelativePath": "api/genres/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieMediaController",
+    "Method": "GetAllMovieMedia",
+    "RelativePath": "api/movie-medias",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieMediaController",
+    "Method": "Create",
+    "RelativePath": "api/movie-medias",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "media",
+        "Type": "Booking_Movie_Tickets.Models.Movies.MovieMedia",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieMediaController",
+    "Method": "GetById",
+    "RelativePath": "api/movie-medias/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieMediaController",
+    "Method": "Update",
+    "RelativePath": "api/movie-medias/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "media",
+        "Type": "Booking_Movie_Tickets.Models.Movies.MovieMedia",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieMediaController",
+    "Method": "Delete",
+    "RelativePath": "api/movie-medias/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieMediaController",
+    "Method": "GetByMovieId",
+    "RelativePath": "api/movie-medias/{movieId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "movieId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieController",
+    "Method": "GetMovies",
+    "RelativePath": "api/movies",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieController",
+    "Method": "AddMovie",
+    "RelativePath": "api/movies",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Booking_Movie_Tickets.DTOs.Movies.Request.MovieRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieController",
+    "Method": "UpdateMovie",
+    "RelativePath": "api/movies/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "Booking_Movie_Tickets.DTOs.Movies.Request.MovieRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieController",
+    "Method": "DeleteMovie",
+    "RelativePath": "api/movies/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.MovieController",
+    "Method": "GetMovieById",
+    "RelativePath": "api/movies/{movieId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "movieId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
