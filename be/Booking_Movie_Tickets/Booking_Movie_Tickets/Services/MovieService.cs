@@ -78,14 +78,17 @@ namespace Booking_Movie_Tickets.Services
 
                 var moviesList = movieDict.Values.AsQueryable();
 
-                // 🔍 Search: Lọc phim theo Title
+                var totalCount = moviesList.Count();
+                var totalPages = (int)Math.Ceiling((double)totalCount / movieFilter.PageSize);
+
+                // Search: Lọc phim theo Title
                 if (!string.IsNullOrEmpty(movieFilter.Search))
                 {
                     var searchTerm = movieFilter.Search.ToLower();
                     moviesList = moviesList.Where(m => m.Title.ToLower().Contains(searchTerm));
                 }
 
-                // 🔀 Sort: Sắp xếp theo yêu cầu
+                // Sort: Sắp xếp theo yêu cầu
                 moviesList = movieFilter.Sort switch
                 {
                     "title_asc" => moviesList.OrderBy(m => m.Title),
@@ -95,9 +98,7 @@ namespace Booking_Movie_Tickets.Services
                     _ => moviesList
                 };
 
-                // 🔢 Phân trang
-                var totalCount = moviesList.Count();
-                var totalPages = (int)Math.Ceiling((double)totalCount / movieFilter.PageSize);
+                // Phân trang
                 var pagedMovies = moviesList.Skip((movieFilter.Page - 1) * movieFilter.PageSize)
                                             .Take(movieFilter.PageSize)
                                             .ToList();
@@ -117,7 +118,6 @@ namespace Booking_Movie_Tickets.Services
                 throw;
             }
         }
-
 
         public async Task<MovieDetailResponse> GetMovieById(Guid movieId)
         {
@@ -151,14 +151,12 @@ namespace Booking_Movie_Tickets.Services
                 .ToListAsync();
         }
 
-
         #region CRUD Movie
         // Thêm phim
         public async Task<Movie> AddMovieAsync(MovieRequest request)
         {
             try
             {
-
                 var movie = new Movie
                 {
                     Id = Guid.NewGuid(),
@@ -223,7 +221,6 @@ namespace Booking_Movie_Tickets.Services
         {
             try
             {
-
                 var movie = await _context.Movies
                     .Include(m => m.MovieGenres)
                     .Include(m => m.Showtimes)

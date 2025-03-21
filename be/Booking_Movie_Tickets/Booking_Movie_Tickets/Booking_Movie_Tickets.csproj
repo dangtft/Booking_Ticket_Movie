@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DTOs\Extras\Response\" />
     <Folder Include="DTOs\Genres\Request\" />
   </ItemGroup>
 

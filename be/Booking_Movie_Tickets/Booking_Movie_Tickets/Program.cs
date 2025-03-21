@@ -1,8 +1,10 @@
 ﻿using Booking_Movie_Tickets.Data;
 using Booking_Movie_Tickets.Helper;
 using Booking_Movie_Tickets.Interfaces;
+using Booking_Movie_Tickets.Models.Users;
 using Booking_Movie_Tickets.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -19,25 +21,25 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddOpenApi();
 builder.Services.AddAuthorization();
 
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddJwtBearer(options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-//        ValidAudience = builder.Configuration["Jwt:Audience"],
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-//    };
-//});
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -97,6 +99,18 @@ builder.Services.AddMemoryCache();
 builder.Services.AddDbContext<BookingDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDbConnection")));
 
+// Cấu hình Identity
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.User.RequireUniqueEmail = true;
+})
+    .AddEntityFrameworkStores<BookingDbContext>()
+    .AddDefaultTokenProviders();
+
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IAgeRatingService, AgeRatingService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
@@ -108,6 +122,8 @@ builder.Services.AddScoped<IAgeRatingService, AgeRatingService>();
 builder.Services.AddScoped<IExtraService, ExtraService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IActorService, ActorService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
@@ -120,8 +136,6 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Booking API v1");
-    c.OAuthClientId(builder.Configuration["Authentication:Google:ClientId"]);
-    c.OAuthClientSecret(builder.Configuration["Authentication:Google:ClientSecret"]);
     c.OAuthUsePkce();
     c.OAuthAppName("Booking API");
     c.RoutePrefix = string.Empty;

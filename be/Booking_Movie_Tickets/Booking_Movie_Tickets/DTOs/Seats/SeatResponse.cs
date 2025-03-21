@@ -3,6 +3,7 @@
     public class SeatResponse
     {
         public Guid SeatId { get; set; }
+        public Guid RoomId { get; set; }
         public int Number { get; set; }  
         public string Type { get; set; }
         public string RoomName { get; set; }

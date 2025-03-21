@@ -1,5 +1,85 @@
 [
   {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AccountController",
+    "Method": "UpdateUserInfo",
+    "RelativePath": "api/account",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateUserDTO",
+        "Type": "Booking_Movie_Tickets.DTOs.Authentication.Request.UpdateUserDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AccountController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/account/change-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Booking_Movie_Tickets.DTOs.Authentication.Request.ChangePasswordRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AccountController",
+    "Method": "Login",
+    "RelativePath": "api/account/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginRequestDTO",
+        "Type": "Booking_Movie_Tickets.DTOs.Authentication.Request.LoginDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AccountController",
+    "Method": "Register",
+    "RelativePath": "api/account/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "registerRequestDTO",
+        "Type": "Booking_Movie_Tickets.DTOs.Authentication.Request.RegisterDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AccountController",
+    "Method": "SaveSocialUser",
+    "RelativePath": "api/account/social-login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "socialUserDto",
+        "Type": "Booking_Movie_Tickets.DTOs.Authentication.Request.SocialUserDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Booking_Movie_Tickets.Controllers.ActorController",
     "Method": "GetAllActors",
     "RelativePath": "api/actors",
@@ -323,6 +403,22 @@
   },
   {
     "ContainingType": "Booking_Movie_Tickets.Controllers.ExtrasController",
+    "Method": "CreateExtra",
+    "RelativePath": "api/extras",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "extra",
+        "Type": "Booking_Movie_Tickets.DTOs.Extras.Request.ExtraRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ExtrasController",
     "Method": "GetExtraById",
     "RelativePath": "api/extras/{id}",
     "HttpMethod": "GET",
@@ -339,8 +435,45 @@
   },
   {
     "ContainingType": "Booking_Movie_Tickets.Controllers.ExtrasController",
+    "Method": "UpdateExtra",
+    "RelativePath": "api/extras/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedExtra",
+        "Type": "Booking_Movie_Tickets.DTOs.Extras.Request.ExtraRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ExtrasController",
+    "Method": "DeleteExtra",
+    "RelativePath": "api/extras/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.ExtrasController",
     "Method": "GetPrice",
-    "RelativePath": "api/extras/{id}/price",
+    "RelativePath": "api/extras/price/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

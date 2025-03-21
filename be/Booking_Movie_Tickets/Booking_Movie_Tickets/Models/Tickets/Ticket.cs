@@ -15,8 +15,7 @@ namespace Booking_Movie_Tickets.Models.Tickets
 
         public Guid ShowTimeId { get; set; }
 
-        [Required, MaxLength(50)]
-        public string BookingCode { get; set; }
+        public string QRCode { get; set; }
 
         public Guid SeatId { get; set; }
 

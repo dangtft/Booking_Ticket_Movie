@@ -2,7 +2,6 @@
 using Booking_Movie_Tickets.DTOs.Movies.Response;
 using Booking_Movie_Tickets.DTOs.Seats;
 using Booking_Movie_Tickets.Interfaces;
-using Booking_Movie_Tickets.Models.Cinemas;
 using Booking_Movie_Tickets.Models.Orders;
 using Booking_Movie_Tickets.Models.Rooms;
 using Booking_Movie_Tickets.Models.Tickets;
@@ -34,6 +33,8 @@ namespace Booking_Movie_Tickets.Services
                     MovieId = s.MovieId,
                     StartTime = s.StartTime,
                     RoomId = s.RoomId,
+                    RoomName = s.Room.Name,
+                    Price = s.Price,
                 })
                 .ToListAsync();
         }
@@ -56,6 +57,7 @@ namespace Booking_Movie_Tickets.Services
             var seats = showtime.Room.Seats.Select(seat => new SeatResponse
             {
                 SeatId = seat.Id,
+                RoomId = seat.RoomId,
                 Number = seat.SeatNumber,
                 Type = seat.SeatType.TypeName,
                 RoomName = seat.Room.Name,
@@ -69,13 +71,13 @@ namespace Booking_Movie_Tickets.Services
         }
 
         // Người dùng chọn ghế -> lưu vào SeatStatuses
-        public bool SelectSeats(List<Guid> seatIds, Guid showtimeId, string? userId = "anonymous")
+        public bool SelectSeats(SelectSeatsRequest selectSeatsRequest)
         {
             var seatStatuses = _context.SeatStatuses
-                .Where(s => seatIds.Contains(s.Seat_Id) && s.Show_Time_Id == showtimeId)
+                .Where(s => selectSeatsRequest.SeatIds.Contains(s.Seat_Id) && s.Show_Time_Id == selectSeatsRequest.ShowtimeId)
                 .ToList();
 
-            foreach (var seatId in seatIds)
+            foreach (var seatId in selectSeatsRequest.SeatIds)
             {
                 var seatStatus = seatStatuses.FirstOrDefault(s => s.Seat_Id == seatId);
 
@@ -85,16 +87,17 @@ namespace Booking_Movie_Tickets.Services
                     {
                         Id = Guid.NewGuid(),
                         Seat_Id = seatId,
-                        Show_Time_Id = showtimeId,
+                        Room_Id = selectSeatsRequest.RoomId,
+                        Show_Time_Id = selectSeatsRequest.ShowtimeId,
                         Status = "Reserved",
                         IsLocked = true,
                         LockedAt = DateTime.UtcNow,
-                        LockedByUserId = userId ?? "anonymous",
+                        LockedByUserId = selectSeatsRequest.UserId ?? "anonymous",
                         Updated_At = DateTime.UtcNow
                     };
                     _context.SeatStatuses.Add(seatStatus);
                 }
-                else if (seatStatus.IsLocked && seatStatus.LockedByUserId != userId)
+                else if (seatStatus.IsLocked && seatStatus.LockedByUserId != selectSeatsRequest.UserId)
                 {
                     return false;
                 }
@@ -102,7 +105,7 @@ namespace Booking_Movie_Tickets.Services
                 {
                     seatStatus.IsLocked = true;
                     seatStatus.LockedAt = DateTime.UtcNow;
-                    seatStatus.LockedByUserId = userId ?? "anonymous";
+                    seatStatus.LockedByUserId = selectSeatsRequest.UserId ?? "anonymous";
                     seatStatus.Status = "Reserved";
                     seatStatus.Updated_At = DateTime.UtcNow;
                 }
@@ -111,22 +114,17 @@ namespace Booking_Movie_Tickets.Services
             return true;
         }
 
-        public bool ReserveSeats(List<Guid> seatIds, Guid showtimeId, string? userId = "anonymous")
-        {
-            return SelectSeats(seatIds, showtimeId, userId);
-        }
-
-        public void ReleaseSeats(List<Guid> seatIds, Guid showtimeId)
+        public void ReleaseSeats(SelectSeatsRequest selectSeatsRequest)
         {
             var seatStatuses = _context.SeatStatuses
-                .Where(s => seatIds.Contains(s.Seat_Id) && s.Show_Time_Id == showtimeId)
+                .Where(s => selectSeatsRequest.SeatIds.Contains(s.Seat_Id) && s.Show_Time_Id == selectSeatsRequest.ShowtimeId)
                 .ToList();
 
             _context.SeatStatuses.RemoveRange(seatStatuses);
             _context.SaveChanges();
         }
 
-        public bool ConfirmOrder(ConfirmOrderRequest request)
+        public async Task<bool> ConfirmOrder(ConfirmOrderRequest request)
         {
             var selectedSeats = _context.SeatStatuses
                 .Where(s => request.SelectedSeats.Contains(s.Seat_Id) && s.Show_Time_Id == request.ShowtimeId && s.Status == "Reserved")
@@ -151,7 +149,7 @@ namespace Booking_Movie_Tickets.Services
                     Id = Guid.NewGuid(),
                     UserId = request.UserId ?? "anonymous",
                     ShowTimeId = request.ShowtimeId,
-                    BookingCode = Guid.NewGuid().ToString("N").Substring(0, 8),
+                    QRCode = Guid.NewGuid().ToString(),
                     SeatId = seat.Seat_Id,
                     TicketTypeId = request.TicketTypeId,
                     TicketStatusId = request.TicketStatusId,
@@ -185,13 +183,28 @@ namespace Booking_Movie_Tickets.Services
                         OrderId = newOrder.Id,
                         ExtraId = extra.ExtraId,
                         Quantity = extra.Quantity,
-                        Subtotal = extra.Quantity * _extraService.GetPrice(extra.ExtraId)
+                        Subtotal = (decimal)extra.Quantity * await _extraService.GetPriceAsync(extra.ExtraId)
                     });
                 }
             }
 
             _orderService.CreateOrder(newOrder);
             return true;
+        }
+
+        public decimal CalculateSeatPrice(List<Guid> seatIds, Guid showtimeId)
+        {
+            var showtime = _context.Showtimes.FirstOrDefault(s => s.Id == showtimeId);
+            if (showtime == null) throw new Exception("Không tìm thấy suất chiếu.");
+
+            var seats = _context.Seats
+                .Include(s => s.SeatType)
+                .Where(s => seatIds.Contains(s.Id))
+                .ToList();
+
+            if (!seats.Any()) throw new Exception("Không tìm thấy ghế.");
+
+            return seats.Sum(s => showtime.Price * s.SeatType.PriceModifier);
         }
 
     }
