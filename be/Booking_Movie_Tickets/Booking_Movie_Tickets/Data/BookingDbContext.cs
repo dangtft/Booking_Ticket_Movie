@@ -40,18 +40,34 @@ namespace Booking_Movie_Tickets.Data
         public DbSet<TicketType> TicketTypes { get; set; }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<MovieActor> MovieActors { get; set; }
-
-        //View
-
-        //
+        public DbSet<OrderDetailExtras> OrderDetailExtras { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Ticket>()
+               .HasOne(t => t.OrderDetail)
+               .WithMany(od => od.Tickets)
+               .HasForeignKey(t => t.OrderDetailId);
+
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<OrderDetailExtras>()
+                .HasKey(oe => new { oe.OrderDetailId, oe.ExtraId });
+
+            modelBuilder.Entity<OrderDetailExtras>()
+                .HasOne(oe => oe.OrderDetail)
+                .WithMany(od => od.OrderDetailExtras)
+                .HasForeignKey(oe => oe.OrderDetailId);
+
+            modelBuilder.Entity<OrderDetailExtras>()
+                .HasOne(oe => oe.Extra)
+                .WithMany(e => e.OrderDetailExtras)
+                .HasForeignKey(oe => oe.ExtraId);
 
             modelBuilder.Entity<Extra>()
                 .Property(e => e.Price)
                 .HasPrecision(18, 2);
+
 
             modelBuilder.Entity<TicketType>()
                 .Property(t => t.Discount)
@@ -66,12 +82,6 @@ namespace Booking_Movie_Tickets.Data
                 .HasOne(sst => sst.Showtime)
                 .WithMany()
                 .HasForeignKey(sst => sst.Show_Time_Id)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<SeatStatusTracking>()
-                .HasOne(sst => sst.Room)
-                .WithMany()
-                .HasForeignKey(sst => sst.Room_Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Cấu hình khóa chính cho MovieGenre 

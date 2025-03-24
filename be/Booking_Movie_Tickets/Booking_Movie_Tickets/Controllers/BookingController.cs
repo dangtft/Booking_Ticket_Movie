@@ -1,4 +1,5 @@
 ﻿using Booking_Movie_Tickets.DTOs.Movies.Response;
+using Booking_Movie_Tickets.DTOs.Orders.Request;
 using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.DTOs.Seats;
 using Booking_Movie_Tickets.Interfaces;
@@ -11,10 +12,12 @@ namespace Booking_Movie_Tickets.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
+        private readonly IOrderService _orderService;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, IOrderService orderService)
         {
             _bookingService = bookingService;
+            _orderService = orderService;
         }
 
         [HttpGet("showtimes/{movieId}")]
@@ -44,37 +47,19 @@ namespace Booking_Movie_Tickets.Controllers
             return Ok(ApiResponse<List<SeatResponse>>.SuccessResponse(seats));
         }
 
-        [HttpPost("select-seats")]
-        public IActionResult SelectSeats([FromBody] SelectSeatsRequest request)
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder([FromBody] OrderRequest request)
         {
-            var result = _bookingService.SelectSeats(request);
-            if (!result)
-                return BadRequest(ApiMessages.ERROR);
-
-            return Ok(ApiMessages.SUCCESS);
-        }
-
-        [HttpPost("release-seats")]
-        public IActionResult ReleaseSeats([FromBody] SelectSeatsRequest request)
-        {
-            try
-            {
-                _bookingService.ReleaseSeats(request);
+            var result = await _orderService.CreateOrderAsync(request);
+            if (result)
                 return Ok(ApiMessages.SUCCESS);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ApiMessages.ERROR);
-            }
+            return BadRequest(ApiMessages.ERROR);
         }
 
-        [HttpPost("confirm-order")]
-        public async Task<IActionResult> ConfirmOrder([FromBody] ConfirmOrderRequest request)
+        [HttpPost("cleanup-unpaid")]
+        public async Task<IActionResult> CleanupUnpaidOrders()
         {
-            var success = await _bookingService.ConfirmOrder(request);
-            if (!success)
-                return BadRequest(ApiMessages.ERROR);
-
+            await _orderService.CleanupUnpaidOrdersAsync();
             return Ok(ApiMessages.SUCCESS);
         }
     }

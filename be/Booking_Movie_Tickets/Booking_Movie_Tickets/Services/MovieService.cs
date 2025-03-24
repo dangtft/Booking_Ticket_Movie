@@ -5,9 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Booking_Movie_Tickets.DTOs.Movies.Request;
 using Booking_Movie_Tickets.DTOs.Movies.Response;
 using Booking_Movie_Tickets.DTOs.Others;
-using Booking_Movie_Tickets.DTOs.Actors.Response;
-using Booking_Movie_Tickets.Models.Cinemas;
-using Booking_Movie_Tickets.DTOs.Seats;
 using System.Data;
 
 namespace Booking_Movie_Tickets.Services
@@ -142,15 +139,6 @@ namespace Booking_Movie_Tickets.Services
             return movieData;
         }
 
-        public async Task<List<Room>> GetRoomsByMovieAndTimeAsync(Guid movieId, DateTime date, TimeSpan time)
-        {
-            return await _context.Showtimes
-                .Where(st => st.MovieId == movieId && st.StartTime.Date == date.Date && st.StartTime.TimeOfDay == time)
-                .Select(st => st.Room)
-                .Distinct()
-                .ToListAsync();
-        }
-
         #region CRUD Movie
         // Thêm phim
         public async Task<Movie> AddMovieAsync(MovieRequest request)
@@ -167,7 +155,6 @@ namespace Booking_Movie_Tickets.Services
                     AgeRatingId = request.AgeRatingId,
                     Rating = request.Rating,
                     ReleaseDate = request.ReleaseDate,
-                    SearchData = Helper.Helper.RemoveDiacritics($"{request.Title} {request.Description} {request.Nation}".ToLower()),
                     MovieGenres = request.GenreIds?.Select(gid => new MovieGenre { GenreId = gid }).ToList() ?? new List<MovieGenre>()
                 };
 
@@ -182,7 +169,8 @@ namespace Booking_Movie_Tickets.Services
                         Id = Guid.NewGuid(),
                         MovieId = movie.Id,
                         RoomId = s.RoomId,
-                        StartTime = s.StartTime,
+                        Date = s.Date,
+                        Time = s.Time,
                         Price = s.Price,
                         IsDeleted = false
                     }).ToList();
@@ -266,7 +254,8 @@ namespace Booking_Movie_Tickets.Services
                         Id = Guid.NewGuid(),
                         MovieId = id,
                         RoomId = s.RoomId,
-                        StartTime = s.StartTime,
+                        Date = s.Date,
+                        Time = s.Time,
                         Price = s.Price,
                         IsDeleted = false
                     }).ToList();

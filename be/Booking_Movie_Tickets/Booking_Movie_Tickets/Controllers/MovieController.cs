@@ -20,7 +20,6 @@ namespace Booking_Movie_Tickets.Controllers
         }
 
         [HttpGet]
-        [HttpGet]
         public async Task<IActionResult> GetMovies([FromQuery] MovieFilter movieFilter)
         {
             if (movieFilter.Page < 1 || movieFilter.PageSize < 1)
@@ -51,9 +50,9 @@ namespace Booking_Movie_Tickets.Controllers
             var movie = await _movieService.GetMovieById(movieId);
             if (movie == null)
             {
-                return NotFound(ApiResponse<string>.ErrorResponse(ApiMessages.NOT_FOUND));
+                return NotFound(ApiMessages.NOT_FOUND);
             }
-            return Ok(ApiResponse<MovieDetailResponse>.SuccessResponse(movie));
+            return Ok(movie);
         }
 
         #region CRUD Movie

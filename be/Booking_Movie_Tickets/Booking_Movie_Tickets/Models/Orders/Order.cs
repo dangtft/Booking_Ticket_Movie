@@ -15,6 +15,7 @@ namespace Booking_Movie_Tickets.Models.Orders
         public decimal TotalAmount { get; set; }
 
         public bool IsDeleted { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [ForeignKey("UserId")]
         public virtual User User { get; set; }

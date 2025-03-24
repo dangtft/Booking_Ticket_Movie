@@ -2,6 +2,8 @@
 using Booking_Movie_Tickets.DTOs.Movies.Response;
 using Booking_Movie_Tickets.DTOs.Seats;
 using Booking_Movie_Tickets.Interfaces;
+using Booking_Movie_Tickets.Models.Cinemas;
+using Booking_Movie_Tickets.Models.Movies;
 using Booking_Movie_Tickets.Models.Orders;
 using Booking_Movie_Tickets.Models.Rooms;
 using Booking_Movie_Tickets.Models.Tickets;
@@ -26,19 +28,19 @@ namespace Booking_Movie_Tickets.Services
         public async Task<IEnumerable<ShowtimeResponse>> GetShowtimesByMovieId(Guid movieId)
         {
             return await _context.Showtimes
-                .Where(s => s.MovieId == movieId && s.StartTime > DateTime.UtcNow)
+                .Where(s => s.MovieId == movieId) //&& s.StartTime > DateTime.UtcNow
                 .Select(s => new ShowtimeResponse
                 {
                     Id = s.Id,
                     MovieId = s.MovieId,
-                    StartTime = s.StartTime,
+                    Date = s.Date,
+                    Time = s.Time,
                     RoomId = s.RoomId,
                     RoomName = s.Room.Name,
                     Price = s.Price,
                 })
                 .ToListAsync();
         }
-
         public async Task<List<SeatResponse>> GetSeatsByShowtime(Guid showtimeId)
         {
             var showtime = await _context.Showtimes
@@ -58,8 +60,10 @@ namespace Booking_Movie_Tickets.Services
             {
                 SeatId = seat.Id,
                 RoomId = seat.RoomId,
+                Row = seat.Row,
                 Number = seat.SeatNumber,
                 Type = seat.SeatType.TypeName,
+                PriceModifier = seat.SeatType.PriceModifier,
                 RoomName = seat.Room.Name,
                 Status = seatStatuses.ContainsKey(seat.Id) ? seatStatuses[seat.Id].Status : "Available",
                 IsLocked = seatStatuses.ContainsKey(seat.Id) ? seatStatuses[seat.Id].IsLocked : false,
@@ -70,141 +74,50 @@ namespace Booking_Movie_Tickets.Services
             return seats;
         }
 
-        // Người dùng chọn ghế -> lưu vào SeatStatuses
-        public bool SelectSeats(SelectSeatsRequest selectSeatsRequest)
+        public async Task<bool> LockedSeat(Guid seatId, string userId)
         {
-            var seatStatuses = _context.SeatStatuses
-                .Where(s => selectSeatsRequest.SeatIds.Contains(s.Seat_Id) && s.Show_Time_Id == selectSeatsRequest.ShowtimeId)
-                .ToList();
+            var seatStatus = await _context.SeatStatuses.FirstOrDefaultAsync(s => s.Seat_Id == seatId);
 
-            foreach (var seatId in selectSeatsRequest.SeatIds)
+            if (seatStatus == null)
             {
-                var seatStatus = seatStatuses.FirstOrDefault(s => s.Seat_Id == seatId);
-
-                if (seatStatus == null)
-                {
-                    seatStatus = new SeatStatusTracking
-                    {
-                        Id = Guid.NewGuid(),
-                        Seat_Id = seatId,
-                        Room_Id = selectSeatsRequest.RoomId,
-                        Show_Time_Id = selectSeatsRequest.ShowtimeId,
-                        Status = "Reserved",
-                        IsLocked = true,
-                        LockedAt = DateTime.UtcNow,
-                        LockedByUserId = selectSeatsRequest.UserId ?? "anonymous",
-                        Updated_At = DateTime.UtcNow
-                    };
-                    _context.SeatStatuses.Add(seatStatus);
-                }
-                else if (seatStatus.IsLocked && seatStatus.LockedByUserId != selectSeatsRequest.UserId)
-                {
-                    return false;
-                }
-                else
-                {
-                    seatStatus.IsLocked = true;
-                    seatStatus.LockedAt = DateTime.UtcNow;
-                    seatStatus.LockedByUserId = selectSeatsRequest.UserId ?? "anonymous";
-                    seatStatus.Status = "Reserved";
-                    seatStatus.Updated_At = DateTime.UtcNow;
-                }
-            }
-            _context.SaveChanges();
-            return true;
-        }
-
-        public void ReleaseSeats(SelectSeatsRequest selectSeatsRequest)
-        {
-            var seatStatuses = _context.SeatStatuses
-                .Where(s => selectSeatsRequest.SeatIds.Contains(s.Seat_Id) && s.Show_Time_Id == selectSeatsRequest.ShowtimeId)
-                .ToList();
-
-            _context.SeatStatuses.RemoveRange(seatStatuses);
-            _context.SaveChanges();
-        }
-
-        public async Task<bool> ConfirmOrder(ConfirmOrderRequest request)
-        {
-            var selectedSeats = _context.SeatStatuses
-                .Where(s => request.SelectedSeats.Contains(s.Seat_Id) && s.Show_Time_Id == request.ShowtimeId && s.Status == "Reserved")
-                .ToList();
-
-            if (selectedSeats.Count != request.SelectedSeats.Count)
-                return false;
-
-            var newOrder = new Order
-            {
-                Id = Guid.NewGuid(),
-                UserId = request.UserId ?? "anonymous",
-                TotalAmount = request.TotalPrice,
-                IsDeleted = false,
-                OrderDetails = new List<OrderDetail>()
-            };
-
-            foreach (var seat in selectedSeats)
-            {
-                var ticket = new Ticket
+                seatStatus = new SeatStatusTracking
                 {
                     Id = Guid.NewGuid(),
-                    UserId = request.UserId ?? "anonymous",
-                    ShowTimeId = request.ShowtimeId,
-                    QRCode = Guid.NewGuid().ToString(),
-                    SeatId = seat.Seat_Id,
-                    TicketTypeId = request.TicketTypeId,
-                    TicketStatusId = request.TicketStatusId,
-                    TicketPrice = request.TicketPrice,
-                    CreatedAt = DateTime.UtcNow
+                    Seat_Id = seatId,
+                    Status = "Locked",
+                    IsLocked = true,
+                    LockedByUserId = userId,
+                    LockedAt = DateTime.UtcNow
                 };
 
-                newOrder.OrderDetails.Add(new OrderDetail
-                {
-                    Id = Guid.NewGuid(),
-                    OrderId = newOrder.Id,
-                    TicketId = ticket.Id,
-                    Quantity = 1,
-                    Subtotal = ticket.TicketPrice
-                });
-
-                seat.Status = "Booked";
-                seat.IsLocked = false;
-                seat.LockedByUserId = null;
-                seat.Updated_At = DateTime.UtcNow;
-                _context.Tickets.Add(ticket);
+                await _context.SeatStatuses.AddAsync(seatStatus);
             }
-
-            if (request.Extras != null)
+            else
             {
-                foreach (var extra in request.Extras)
-                {
-                    newOrder.OrderDetails.Add(new OrderDetail
-                    {
-                        Id = Guid.NewGuid(),
-                        OrderId = newOrder.Id,
-                        ExtraId = extra.ExtraId,
-                        Quantity = extra.Quantity,
-                        Subtotal = (decimal)extra.Quantity * await _extraService.GetPriceAsync(extra.ExtraId)
-                    });
-                }
+                if (seatStatus.IsLocked)
+                    return false;
+
+                seatStatus.Status = "Locked";
+                seatStatus.IsLocked = true;
+                seatStatus.LockedByUserId = userId;
+                seatStatus.LockedAt = DateTime.UtcNow;
             }
 
-            _orderService.CreateOrder(newOrder);
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public decimal CalculateSeatPrice(List<Guid> seatIds, Guid showtimeId)
+        public async Task<bool> UnlockSeat(Guid seatId, string userId, Guid showtimeId)
         {
-            var showtime = _context.Showtimes.FirstOrDefault(s => s.Id == showtimeId);
-            if (showtime == null) throw new Exception("Không tìm thấy suất chiếu.");
+            var seatStatus = await _context.SeatStatuses
+                .FirstOrDefaultAsync(s => s.Seat_Id == seatId && s.Show_Time_Id == showtimeId);
 
-            var seats = _context.Seats
-                .Include(s => s.SeatType)
-                .Where(s => seatIds.Contains(s.Id))
-                .ToList();
+            if (seatStatus == null || seatStatus.LockedByUserId != userId)
+                return false; 
 
-            if (!seats.Any()) throw new Exception("Không tìm thấy ghế.");
-
-            return seats.Sum(s => showtime.Price * s.SeatType.PriceModifier);
+            _context.SeatStatuses.Remove(seatStatus);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
     }

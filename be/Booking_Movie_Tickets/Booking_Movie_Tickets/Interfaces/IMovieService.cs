@@ -14,7 +14,6 @@ namespace Booking_Movie_Tickets.Interfaces
         Task<Movie> AddMovieAsync(MovieRequest request);
         Task<Movie> UpdateMovieAsync(Guid id, MovieRequest request);
         Task<bool> DeleteMovieAsync(Guid id);
-        Task<List<Room>> GetRoomsByMovieAndTimeAsync(Guid movieId, DateTime date, TimeSpan time);
         Task<MovieDetailResponse> GetMovieById(Guid movieId);
 
     }

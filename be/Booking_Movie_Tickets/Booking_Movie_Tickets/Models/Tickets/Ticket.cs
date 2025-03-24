@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using Booking_Movie_Tickets.Models.Cinemas;
 using Booking_Movie_Tickets.Models.Movies;
 using Booking_Movie_Tickets.Models.Users;
+using Newtonsoft.Json;
+using Booking_Movie_Tickets.Models.Orders;
 
 namespace Booking_Movie_Tickets.Models.Tickets
 {
@@ -11,9 +13,8 @@ namespace Booking_Movie_Tickets.Models.Tickets
         [Key]
         public Guid Id { get; set; }
 
-        public string UserId { get; set; }
-
         public Guid ShowTimeId { get; set; }
+        public Guid OrderDetailId { get; set; }
 
         public string QRCode { get; set; }
 
@@ -22,24 +23,25 @@ namespace Booking_Movie_Tickets.Models.Tickets
         public Guid TicketTypeId { get; set; }
 
         public Guid TicketStatusId { get; set; }
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal TicketPrice { get; set; }
-        public DateTime CreatedAt { get; set; }
 
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
-
+        [JsonIgnore]
         [ForeignKey("ShowTimeId")]
         public virtual Showtime Showtime { get; set; }
-
+        [JsonIgnore]
         [ForeignKey("SeatId")]
         public virtual Seat Seat { get; set; }
-
+        [JsonIgnore]
         [ForeignKey("TicketTypeId")]
         public virtual TicketType TicketType { get; set; }
-
+        [JsonIgnore]
         [ForeignKey("TicketStatusId")]
         public virtual TicketStatus TicketStatus { get; set; }
+
+        [ForeignKey("OrderDetailId")]
+        public virtual OrderDetail OrderDetail { get; set; }
     }
 
 }

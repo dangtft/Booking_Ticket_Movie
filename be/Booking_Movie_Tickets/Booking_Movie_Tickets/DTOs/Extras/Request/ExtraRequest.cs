@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Booking_Movie_Tickets.DTOs.Extras.Request
+﻿namespace Booking_Movie_Tickets.DTOs.Extras.Request
 {
     public class ExtraRequest
     {

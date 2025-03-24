@@ -11,23 +11,15 @@ namespace Booking_Movie_Tickets.Models.Orders
 
         public Guid OrderId { get; set; }
 
-        public Guid TicketId { get; set; }
-
-        public Guid? ExtraId { get; set; }
-
-        public int Quantity { get; set; }
-
         [Column(TypeName =" decimal(18,2)")]
         public decimal Subtotal { get; set; }
 
         [ForeignKey("OrderId")]
         public virtual Order Order { get; set; }
 
-        [ForeignKey("TicketId")]
-        public virtual Ticket Ticket { get; set; }
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 
-        [ForeignKey("ExtraId")]
-        public virtual Extra? Extra { get; set; }
+        public ICollection<OrderDetailExtras> OrderDetailExtras { get; set; } = new List<OrderDetailExtras>();
     }
 
 }

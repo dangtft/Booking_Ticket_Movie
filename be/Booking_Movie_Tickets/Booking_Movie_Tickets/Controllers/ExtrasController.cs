@@ -1,10 +1,7 @@
 ﻿using Booking_Movie_Tickets.DTOs.Extras.Request;
-using Booking_Movie_Tickets.DTOs.Movies.Response;
 using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Orders;
-using Booking_Movie_Tickets.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking_Movie_Tickets.Controllers

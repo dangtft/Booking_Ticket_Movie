@@ -107,6 +107,12 @@ namespace Booking_Movie_Tickets.Services
                 return false;
             }
 
+            var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, request.CurrentPassword);
+            if (!isPasswordCorrect)
+            {
+                return false; 
+            }
+
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
             return changePasswordResult.Succeeded;
         }

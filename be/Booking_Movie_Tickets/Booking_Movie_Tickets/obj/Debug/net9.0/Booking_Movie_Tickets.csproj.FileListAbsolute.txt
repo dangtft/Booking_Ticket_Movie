@@ -181,3 +181,12 @@ C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\obj\Debug\net9.0\Booking_Movie_Tickets.sourcelink.json
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\SkiaSharp.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\zxing.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\ZXing.SkiaSharp.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\osx\native\libSkiaSharp.dylib
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win-arm64\native\libSkiaSharp.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win-x64\native\libSkiaSharp.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win-x86\native\libSkiaSharp.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\ExCSS.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\Svg.dll

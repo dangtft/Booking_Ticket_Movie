@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|c:\\users\\admin\\desktop\\book_movie_ticket\\be\\booking_movie_tickets\\booking_movie_tickets\\controllers\\bookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|solutionrelative:booking_movie_tickets\\controllers\\bookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|c:\\users\\admin\\desktop\\book_movie_ticket\\be\\booking_movie_tickets\\booking_movie_tickets\\services\\ticketservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|solutionrelative:booking_movie_tickets\\services\\ticketservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|c:\\users\\admin\\desktop\\book_movie_ticket\\be\\booking_movie_tickets\\booking_movie_tickets\\services\\bookingservice .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|solutionrelative:booking_movie_tickets\\services\\bookingservice .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|c:\\users\\admin\\desktop\\book_movie_ticket\\be\\booking_movie_tickets\\booking_movie_tickets\\interfaces\\ibookingservice.cs||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|solutionrelative:booking_movie_tickets\\interfaces\\ibookingservice.cs||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|c:\\users\\admin\\desktop\\book_movie_ticket\\be\\booking_movie_tickets\\booking_movie_tickets\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{823B2589-B953-4A25-B3A2-FD9B88CBF13E}|Booking_Movie_Tickets\\Booking_Movie_Tickets.csproj|solutionrelative:booking_movie_tickets\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,45 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IBookingService.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Interfaces\\IBookingService.cs",
-              "RelativeDocumentMoniker": "Booking_Movie_Tickets\\Interfaces\\IBookingService.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Interfaces\\IBookingService.cs",
-              "RelativeToolTip": "Booking_Movie_Tickets\\Interfaces\\IBookingService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "TicketService.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Services\\TicketService.cs",
+              "RelativeDocumentMoniker": "Booking_Movie_Tickets\\Services\\TicketService.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Services\\TicketService.cs",
+              "RelativeToolTip": "Booking_Movie_Tickets\\Services\\TicketService.cs",
+              "ViewState": "AgIAAH0AAAAAAAAAAAA9wMsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-21T03:50:55.231Z",
+              "WhenOpened": "2025-03-24T08:01:58.253Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BookingService .cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Services\\BookingService .cs",
-              "RelativeDocumentMoniker": "Booking_Movie_Tickets\\Services\\BookingService .cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Services\\BookingService .cs",
-              "RelativeToolTip": "Booking_Movie_Tickets\\Services\\BookingService .cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAxwBIAAAAJAAAAAAAAAA==",
+              "Title": "OrderService.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Services\\OrderService.cs",
+              "RelativeDocumentMoniker": "Booking_Movie_Tickets\\Services\\OrderService.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Services\\OrderService.cs",
+              "RelativeToolTip": "Booking_Movie_Tickets\\Services\\OrderService.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAIwGYAAABTAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-21T03:50:37.016Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "BookingController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Controllers\\BookingController.cs",
-              "RelativeDocumentMoniker": "Booking_Movie_Tickets\\Controllers\\BookingController.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\Book_Movie_Ticket\\be\\Booking_Movie_Tickets\\Booking_Movie_Tickets\\Controllers\\BookingController.cs",
-              "RelativeToolTip": "Booking_Movie_Tickets\\Controllers\\BookingController.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAQwDYAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-21T03:50:14.742Z",
+              "WhenOpened": "2025-03-24T07:52:02.728Z",
               "EditorCaption": ""
             },
             {

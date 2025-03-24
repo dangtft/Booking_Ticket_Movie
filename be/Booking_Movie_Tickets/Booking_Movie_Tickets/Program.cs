@@ -124,6 +124,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITicketService, TicketService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();

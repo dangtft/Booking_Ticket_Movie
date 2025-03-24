@@ -1,11 +1,22 @@
-﻿namespace Booking_Movie_Tickets.DTOs.Tickets.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Booking_Movie_Tickets.DTOs.Tickets.Request
 {
     public class TicketRequest
     {
-        public string UserId { get; set; } = string.Empty;
-        public Guid ShowtimeId { get; set; }
+
+        [Required]
+        public Guid ShowTimeId { get; set; }
+
+        [Required]
         public Guid SeatId { get; set; }
+
+        [Required]
         public Guid TicketTypeId { get; set; }
-        public Guid TicketStatusId { get; set; }
+
+        [Required]
+        public decimal TicketPrice { get; set; }
+        [Required]
+        public Guid OrderDetailId { get; set; }
     }
 }

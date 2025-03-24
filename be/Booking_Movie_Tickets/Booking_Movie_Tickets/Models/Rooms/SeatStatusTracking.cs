@@ -17,15 +17,13 @@ namespace Booking_Movie_Tickets.Models.Rooms
         public Guid Show_Time_Id { get; set; }  
 
         [Required]
-        public Guid Room_Id { get; set; } 
-
-        [Required]
         [StringLength(50)]
         public string Status { get; set; }
         public bool IsLocked { get; set; } = false;
         public string? LockedByUserId { get; set; }
         public DateTime? LockedAt { get; set; }
         public DateTime Updated_At { get; set; } = DateTime.UtcNow;  
+        public DateTime? ExpirationTime { get; set; }
 
         [ForeignKey("Seat_Id")]
         public Seat Seat { get; set; }
@@ -33,7 +31,5 @@ namespace Booking_Movie_Tickets.Models.Rooms
         [ForeignKey("Show_Time_Id")]
         public Showtime Showtime { get; set; }
 
-        [ForeignKey("Room_Id")]
-        public Room Room { get; set; }
     }
 }

@@ -3,7 +3,8 @@
     public class ShowtimeRequest
     {
         public Guid RoomId { get; set; }
-        public DateTime StartTime { get; set; }
+        public DateOnly Date {  get; set; }
+        public TimeOnly Time { get; set; }
         public decimal Price { get; set; }
     }
 }

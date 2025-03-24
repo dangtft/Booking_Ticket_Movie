@@ -17,9 +17,13 @@ namespace Booking_Movie_Tickets.Models.Orders
 
         public Guid CategoryId { get; set; }
         public bool IsDeleted { get; set; }
+        public string? ImageURL { get; set; }
 
-        [ForeignKey("Id")]
+        [ForeignKey("CategoryId")]
         public virtual ExtrasCategory Category { get; set; }
+
+        public ICollection<OrderDetailExtras> OrderDetailExtras { get; set; } = new List<OrderDetailExtras>();
+
     }
 
 }

@@ -11,6 +11,7 @@ namespace Booking_Movie_Tickets.Models.Tickets
         public string TypeName { get; set; }
 
         public decimal Discount { get; set; }
+        public string Type { get; set; }
     }
 
 }

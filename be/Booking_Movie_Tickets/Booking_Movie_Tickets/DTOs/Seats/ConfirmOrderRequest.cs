@@ -5,7 +5,7 @@ namespace Booking_Movie_Tickets.DTOs.Seats
     public class ConfirmOrderRequest
     {
         [Required]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         [Required]
         public Guid ShowtimeId { get; set; }

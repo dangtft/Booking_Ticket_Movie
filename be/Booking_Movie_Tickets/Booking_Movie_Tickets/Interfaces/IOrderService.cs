@@ -6,8 +6,7 @@ namespace Booking_Movie_Tickets.Interfaces
 {
     public interface IOrderService
     {
-        //Task<OrderResponse> CreateOrderAsync(HttpContext httpContext, OrderRequest request);
+        Task<bool> CreateOrderAsync(OrderRequest request);
         Task CleanupUnpaidOrdersAsync();
-        void CreateOrder(Order order);
     }
 }

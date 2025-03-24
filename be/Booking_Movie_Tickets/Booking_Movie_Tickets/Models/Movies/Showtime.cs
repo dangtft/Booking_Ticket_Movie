@@ -13,7 +13,9 @@ namespace Booking_Movie_Tickets.Models.Movies
 
         public Guid RoomId { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateOnly Date { get; set; }
+
+        public TimeOnly Time { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }

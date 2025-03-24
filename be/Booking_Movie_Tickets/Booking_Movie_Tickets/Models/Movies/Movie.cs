@@ -27,7 +27,6 @@ namespace Booking_Movie_Tickets.Models.Movies
         public DateTime ReleaseDate { get; set; }
 
         public bool IsDeleted { get; set; } = false;
-        public string SearchData { get; set; }
 
         [ForeignKey(nameof(AgeRatingId))]
         public virtual AgeRating? AgeRating { get; set; }

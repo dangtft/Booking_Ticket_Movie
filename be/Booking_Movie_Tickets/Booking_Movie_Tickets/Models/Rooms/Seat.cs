@@ -11,6 +11,8 @@ namespace Booking_Movie_Tickets.Models.Cinemas
 
         public Guid RoomId { get; set; }
 
+        public string Row { get; set; }
+
         public int SeatNumber { get; set; }
 
         public Guid SeatTypeId { get; set; }

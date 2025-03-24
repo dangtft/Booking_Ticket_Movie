@@ -41,7 +41,8 @@ namespace Booking_Movie_Tickets.Services
                         Name = e.Name,
                         Description = e.Description,
                         Price = e.Price,
-                        CategoryId = e.CategoryId
+                        CategoryId = e.CategoryId,
+                        ImageURL = e.ImageURL
                     }
                 );
 
@@ -62,7 +63,6 @@ namespace Booking_Movie_Tickets.Services
                 TotalPages = totalPages
             };
         }
-
 
         public async Task<Extra> CreateExtraAsync(ExtraRequest request)
         {
