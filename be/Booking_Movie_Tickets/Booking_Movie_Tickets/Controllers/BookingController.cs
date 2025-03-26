@@ -1,7 +1,7 @@
 ﻿using Booking_Movie_Tickets.DTOs.Movies.Response;
 using Booking_Movie_Tickets.DTOs.Orders.Request;
 using Booking_Movie_Tickets.DTOs.Others;
-using Booking_Movie_Tickets.DTOs.Seats;
+using Booking_Movie_Tickets.DTOs.Seats.Response;
 using Booking_Movie_Tickets.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

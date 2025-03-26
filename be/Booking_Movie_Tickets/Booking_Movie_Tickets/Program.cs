@@ -1,4 +1,5 @@
-﻿using Booking_Movie_Tickets.Data;
+﻿using Booking_Movie_Tickets.Configs;
+using Booking_Movie_Tickets.Data;
 using Booking_Movie_Tickets.Helper;
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Users;
@@ -8,8 +9,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +49,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Booking API", Version = "v1" });
+    //options.EnableAnnotations();
+    //options.OperationFilter<FileUploadOperation>();
     options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -83,17 +90,19 @@ builder.Services.AddSession(options =>
 // Cấu hình CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp", builder =>
+    options.AddPolicy("AllowAnyOrigin", builder =>
     {
-        builder.WithOrigins("http://localhost:4200")
+        builder.AllowAnyOrigin()
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowAnyMethod();
+           // .AllowCredentials();
     });
 });
 
 builder.Services.AddMemoryCache();
 
+builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 // Đăng ký cơ sở dữ liệu
 builder.Services.AddDbContext<BookingDbContext>(options =>
@@ -125,6 +134,7 @@ builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddSingleton<IVnPayService, VnPayService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
@@ -142,10 +152,16 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
-app.UseHttpsRedirection();
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
+//    RequestPath = "/uploads"
+//});
 
+app.UseHttpsRedirection();
 app.UseSession();
-app.UseCors("AllowAngularApp");
+app.UseCors("AllowAnyOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();

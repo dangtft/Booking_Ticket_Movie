@@ -19,31 +19,6 @@ namespace Booking_Movie_Tickets.Controllers
             _ticketService = ticketService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllTicketType([FromQuery] PagedFilterBase filter)
-        {
-            if (filter.Page < 1 || filter.PageSize < 1)
-            {
-                return BadRequest(new ApiResponse<string>(ApiMessages.INVALID_PAGINATION));
-            }
-
-            try
-            {
-                var pagedResult = await _ticketService.GetAllTicketType(filter);
-
-                if (pagedResult == null || !pagedResult.Data.Any())
-                {
-                    return NoContent();
-                }
-
-                return Ok(new ApiResponse<TicketType>(pagedResult));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse<string>(ApiMessages.ERROR));
-            }
-        }
-
         [HttpPost]
         public IActionResult CreateTicket([FromBody] TicketRequest request)
         {

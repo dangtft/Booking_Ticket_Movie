@@ -22,7 +22,13 @@ namespace Booking_Movie_Tickets.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerRequestDTO)
         {
             var result = await _accountService.RegisterAsync(registerRequestDTO);
-            return result is string ? BadRequest(result) : Ok(result);
+
+            if (result is string && !string.IsNullOrEmpty(result.ToString()))
+            {
+                return BadRequest(new { status = 400, message = result });
+            }
+
+            return Ok(new { status = 200, message = "Đăng ký thành công" });
         }
 
         [HttpPost("login")]
@@ -36,7 +42,12 @@ namespace Booking_Movie_Tickets.Controllers
         public async Task<IActionResult> SaveSocialUser([FromBody] SocialUserDTO socialUserDto)
         {
             var success = await _accountService.SaveSocialUserAsync(socialUserDto);
-            return success ? Ok(ApiMessages.SUCCESS) : BadRequest(ApiMessages.ERROR);
+            if (!success)
+            {
+                return BadRequest(new { status = 400, message = "Đăng nhập bằng mạng xã hội thất bại" });
+            }
+
+            return Ok(new { status = 200, message = "Đăng nhập bằng mạng xã hội thành công" });
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -44,7 +55,12 @@ namespace Booking_Movie_Tickets.Controllers
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDTO request)
         {
             var success = await _accountService.ChangePasswordAsync(request);
-            return success ? Ok(ApiMessages.SUCCESS) : BadRequest(ApiMessages.ERROR);
+            if (!success)
+            {
+                return BadRequest(new { status = 400, message = "Đổi mật khẩu thất bại" });
+            }
+
+            return Ok(new { status = 200, message = "Đổi mật khẩu thành công" });
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -52,7 +68,12 @@ namespace Booking_Movie_Tickets.Controllers
         public async Task<IActionResult> UpdateUserInfo([FromBody] UpdateUserDTO updateUserDTO)
         {
             var success = await _accountService.UpdateUserInfoAsync(updateUserDTO);
-            return success ? Ok(ApiMessages.SUCCESS) : BadRequest(ApiMessages.ERROR);
+            if (!success)
+            {
+                return BadRequest(new { status = 400, message = "Cập nhật thông tin thất bại" });
+            }
+
+            return Ok(new { status = 200, message = "Cập nhật thông tin thành công" });
         }
     }
 }

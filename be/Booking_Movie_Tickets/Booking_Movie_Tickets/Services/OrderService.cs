@@ -72,13 +72,27 @@ namespace Booking_Movie_Tickets.Services
                                 return false;
                             }
 
+                            // Kiểm tra xem vé đã tồn tại trong hệ thống chưa
+                            var existingTicket = await _context.Tickets
+                                .Include(t => t.OrderDetail)
+                                .ThenInclude(od => od.Order)
+                                .FirstOrDefaultAsync(t => t.ShowTimeId == ticketRequest.ShowTimeId &&
+                                                          t.SeatId == ticketRequest.SeatId &&
+                                                          !t.OrderDetail.Order.IsDeleted);
+
+                            if (existingTicket != null)
+                            {
+                                Console.WriteLine($"Seat {ticketRequest.SeatId} is already booked for ShowTime {ticketRequest.ShowTimeId}.");
+                                await transaction.RollbackAsync();
+                                return false;
+                            }
+
                             Console.WriteLine($"Processing Ticket for ShowTime: {ticketRequest.ShowTimeId}");
 
                             var newTicketRequest = new TicketRequest
                             {
                                 ShowTimeId = ticketRequest.ShowTimeId,
                                 SeatId = ticketRequest.SeatId,
-                                TicketTypeId = ticketRequest.TicketTypeId,
                                 TicketPrice = ticketRequest.TicketPrice,
                                 OrderDetailId = orderDetail.Id 
                             };
@@ -178,11 +192,11 @@ namespace Booking_Movie_Tickets.Services
 
                 if (ticketIds.Any())
                 {
-                    var seatStatuses = await _context.SeatStatuses
-                        .Where(s => ticketIds.Contains(s.Seat_Id))
+                    var seatStatuses = await _context.SeatStatusTracking
+                        .Where(s => ticketIds.Contains(s.SeatId))
                         .ToListAsync();
 
-                    _context.SeatStatuses.RemoveRange(seatStatuses);
+                    _context.SeatStatusTracking.RemoveRange(seatStatuses);
                 }
 
                 foreach (var order in unpaidOrders)

@@ -591,7 +591,7 @@ namespace Booking_Movie_Tickets.Migrations
 
                     b.HasIndex("Show_Time_Id");
 
-                    b.ToTable("SeatStatuses");
+                    b.ToTable("SeatStatusTracking");
                 });
 
             modelBuilder.Entity("Booking_Movie_Tickets.Models.Tickets.Ticket", b =>

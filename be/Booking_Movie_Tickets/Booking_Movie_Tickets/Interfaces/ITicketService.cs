@@ -8,6 +8,5 @@ namespace Booking_Movie_Tickets.Interfaces
     {
         Ticket CreateTicket(TicketRequest request);
         Task<string?> GetQRCodeAsync(Guid ticketId);
-        Task<PagedResult<TicketType>> GetAllTicketType(PagedFilterBase filter);
     }
 }

@@ -536,7 +536,7 @@ namespace Booking_Movie_Tickets.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SeatStatuses",
+                name: "SeatStatusTracking",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -548,21 +548,21 @@ namespace Booking_Movie_Tickets.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SeatStatuses", x => x.Id);
+                    table.PrimaryKey("PK_SeatStatusTracking", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SeatStatuses_Rooms_Room_Id",
+                        name: "FK_SeatStatusTracking_Rooms_Room_Id",
                         column: x => x.Room_Id,
                         principalTable: "Rooms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SeatStatuses_Seats_Seat_Id",
+                        name: "FK_SeatStatusTracking_Seats_Seat_Id",
                         column: x => x.Seat_Id,
                         principalTable: "Seats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SeatStatuses_Showtimes_Show_Time_Id",
+                        name: "FK_SeatStatusTracking_Showtimes_Show_Time_Id",
                         column: x => x.Show_Time_Id,
                         principalTable: "Showtimes",
                         principalColumn: "Id",
@@ -769,18 +769,18 @@ namespace Booking_Movie_Tickets.Migrations
                 column: "SeatTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SeatStatuses_Room_Id",
-                table: "SeatStatuses",
+                name: "IX_SeatStatusTracking_Room_Id",
+                table: "SeatStatusTracking",
                 column: "Room_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SeatStatuses_Seat_Id",
-                table: "SeatStatuses",
+                name: "IX_SeatStatusTracking_Seat_Id",
+                table: "SeatStatusTracking",
                 column: "Seat_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SeatStatuses_Show_Time_Id",
-                table: "SeatStatuses",
+                name: "IX_SeatStatusTracking_Show_Time_Id",
+                table: "SeatStatusTracking",
                 column: "Show_Time_Id");
 
             migrationBuilder.CreateIndex(
@@ -856,7 +856,7 @@ namespace Booking_Movie_Tickets.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "SeatStatuses");
+                name: "SeatStatusTracking");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

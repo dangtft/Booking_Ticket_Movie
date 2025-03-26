@@ -1,12 +1,7 @@
 ﻿using Booking_Movie_Tickets.Data;
 using Booking_Movie_Tickets.DTOs.Movies.Response;
-using Booking_Movie_Tickets.DTOs.Seats;
+using Booking_Movie_Tickets.DTOs.Seats.Response;
 using Booking_Movie_Tickets.Interfaces;
-using Booking_Movie_Tickets.Models.Cinemas;
-using Booking_Movie_Tickets.Models.Movies;
-using Booking_Movie_Tickets.Models.Orders;
-using Booking_Movie_Tickets.Models.Rooms;
-using Booking_Movie_Tickets.Models.Tickets;
 using Microsoft.EntityFrameworkCore;
 
 namespace Booking_Movie_Tickets.Services
@@ -14,14 +9,10 @@ namespace Booking_Movie_Tickets.Services
     public class BookingService : IBookingService
     {
         private readonly BookingDbContext _context;
-        private readonly IOrderService _orderService;
-        private readonly IExtraService _extraService;
 
-        public BookingService(BookingDbContext context, IOrderService orderService, IExtraService extraService)
+        public BookingService(BookingDbContext context)
         {
             _context = context;
-            _orderService = orderService;
-            _extraService = extraService;
         }
 
         //Lấy phim và suất chiếu theo Id
@@ -52,9 +43,9 @@ namespace Booking_Movie_Tickets.Services
             if (showtime == null)
                 return new List<SeatResponse>();
 
-            var seatStatuses = await _context.SeatStatuses
-                .Where(s => s.Show_Time_Id == showtimeId)
-                .ToDictionaryAsync(s => s.Seat_Id);
+            var seatStatuses = await _context.SeatStatusTracking
+                .Where(s => s.ShowTimeId == showtimeId)
+                .ToDictionaryAsync(s => s.SeatId);
 
             var seats = showtime.Room.Seats.Select(seat => new SeatResponse
             {
@@ -72,52 +63,6 @@ namespace Booking_Movie_Tickets.Services
             }).ToList();
 
             return seats;
-        }
-
-        public async Task<bool> LockedSeat(Guid seatId, string userId)
-        {
-            var seatStatus = await _context.SeatStatuses.FirstOrDefaultAsync(s => s.Seat_Id == seatId);
-
-            if (seatStatus == null)
-            {
-                seatStatus = new SeatStatusTracking
-                {
-                    Id = Guid.NewGuid(),
-                    Seat_Id = seatId,
-                    Status = "Locked",
-                    IsLocked = true,
-                    LockedByUserId = userId,
-                    LockedAt = DateTime.UtcNow
-                };
-
-                await _context.SeatStatuses.AddAsync(seatStatus);
-            }
-            else
-            {
-                if (seatStatus.IsLocked)
-                    return false;
-
-                seatStatus.Status = "Locked";
-                seatStatus.IsLocked = true;
-                seatStatus.LockedByUserId = userId;
-                seatStatus.LockedAt = DateTime.UtcNow;
-            }
-
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> UnlockSeat(Guid seatId, string userId, Guid showtimeId)
-        {
-            var seatStatus = await _context.SeatStatuses
-                .FirstOrDefaultAsync(s => s.Seat_Id == seatId && s.Show_Time_Id == showtimeId);
-
-            if (seatStatus == null || seatStatus.LockedByUserId != userId)
-                return false; 
-
-            _context.SeatStatuses.Remove(seatStatus);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
     }

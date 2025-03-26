@@ -71,7 +71,6 @@ namespace Booking_Movie_Tickets.Services
                 Id = Guid.NewGuid(),
                 ShowTimeId = request.ShowTimeId,
                 SeatId = request.SeatId,
-                TicketTypeId = request.TicketTypeId,
                 TicketStatusId = pendingStatus.Id,
                 TicketPrice = request.TicketPrice,
                 OrderDetailId = request.OrderDetailId
@@ -86,8 +85,8 @@ namespace Booking_Movie_Tickets.Services
                 throw new InvalidOperationException($"Lỗi khi tạo QRCode: {ex.Message}");
             }
 
-            var seatStatus = _context.SeatStatuses
-                .FirstOrDefault(s => s.Seat_Id == request.SeatId && s.Show_Time_Id == request.ShowTimeId);
+            var seatStatus = _context.SeatStatusTracking
+                .FirstOrDefault(s => s.SeatId == request.SeatId && s.ShowTimeId == request.ShowTimeId);
 
             if (seatStatus != null)
             {
@@ -98,29 +97,6 @@ namespace Booking_Movie_Tickets.Services
             _context.SaveChanges();
 
             return ticket;
-        }
-
-
-        public async Task<PagedResult<TicketType>> GetAllTicketType(PagedFilterBase filter)
-        {
-            var query = _context.TicketTypes.AsQueryable();
-
-            var totalCount = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling((double)totalCount / filter.PageSize);
-
-            var ticketType = await query
-                .Skip((filter.Page - 1) * filter.PageSize)
-                .Take(filter.PageSize)
-                .ToListAsync();
-
-            return new PagedResult<TicketType>
-            {
-                Data = ticketType,
-                Page = filter.Page,
-                PageSize = filter.PageSize,
-                TotalCount = totalCount,
-                TotalPages = totalPages
-            };
         }
 
         public async Task<bool> ConfirmPayment(Guid ticketId)
@@ -142,7 +118,7 @@ namespace Booking_Movie_Tickets.Services
             return true;
         }
 
-        public async Task<bool> CancelTicket(Guid ticketId)
+        public async Task<bool> CancelTicket(Guid ticketId) 
         {
             var ticket = await _context.Tickets
                 .Include(t => t.TicketStatus)
@@ -153,12 +129,12 @@ namespace Booking_Movie_Tickets.Services
 
             _context.Tickets.Remove(ticket);
 
-            var seatStatus = await _context.SeatStatuses
-                .FirstOrDefaultAsync(s => s.Seat_Id == ticket.SeatId && s.Show_Time_Id == ticket.ShowTimeId);
+            var seatStatus = await _context.SeatStatusTracking
+                .FirstOrDefaultAsync(s => s.SeatId == ticket.SeatId && s.ShowTimeId == ticket.ShowTimeId);
 
             if (seatStatus != null)
             {
-                _context.SeatStatuses.Remove(seatStatus);
+                _context.SeatStatusTracking.Remove(seatStatus);
             }
 
             await _context.SaveChangesAsync();

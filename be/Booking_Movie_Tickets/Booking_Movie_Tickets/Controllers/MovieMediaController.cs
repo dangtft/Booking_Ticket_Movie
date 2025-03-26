@@ -36,7 +36,7 @@ namespace Booking_Movie_Tickets.Controllers
         }
 
         // Lấy MovieMedia theo MovieID
-        [HttpGet("{movieId}")]
+        [HttpGet("get-by-movie/{movieId}")]
         public async Task<IActionResult> GetByMovieId(Guid movieId)
         {
             var media = await _movieMediaService.GetMovieMediaByMovieIdAsync(movieId);

@@ -1,5 +1,5 @@
 ﻿using Booking_Movie_Tickets.DTOs.Movies.Response;
-using Booking_Movie_Tickets.DTOs.Seats;
+using Booking_Movie_Tickets.DTOs.Seats.Response;
 using Booking_Movie_Tickets.Models.Cinemas;
 using Booking_Movie_Tickets.Models.Movies;
 using Booking_Movie_Tickets.Models.Orders;
@@ -11,6 +11,5 @@ namespace Booking_Movie_Tickets.Interfaces
     {
         Task<IEnumerable<ShowtimeResponse>> GetShowtimesByMovieId(Guid movieId);
         Task<List<SeatResponse>> GetSeatsByShowtime(Guid showtimeId);
-        Task<bool> LockedSeat(Guid seatId, string userId);
     }
 }

@@ -142,9 +142,6 @@ C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
@@ -165,7 +162,6 @@ C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.Booking_Movie_Tickets.props
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.Booking_Movie_Tickets.props
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\obj\Debug\net9.0\staticwebassets.pack.json
-C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\obj\Debug\net9.0\Booking_.2DD5C34F.Up2Date
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\obj\Debug\net9.0\Booking_Movie_Tickets.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\obj\Debug\net9.0\refint\Booking_Movie_Tickets.dll
@@ -190,3 +186,13 @@ C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win-x86\native\libSkiaSharp.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\ExCSS.dll
 C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\Svg.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\System.Private.Windows.Core.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\runtimes\win\lib\net9.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\BouncyCastle.Cryptography.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\MediatR.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\MediatR.Contracts.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\payos-lib-backend-dotnet.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\AutoMapper.dll
+C:\Users\Admin\Desktop\Book_Movie_Ticket\be\Booking_Movie_Tickets\Booking_Movie_Tickets\bin\Debug\net9.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

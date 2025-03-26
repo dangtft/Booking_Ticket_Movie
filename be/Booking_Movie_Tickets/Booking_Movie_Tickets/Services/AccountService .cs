@@ -22,13 +22,14 @@ namespace Booking_Movie_Tickets.Services
         {
             if (registerRequestDTO == null)
             {
-                return ApiMessages.ERROR;
+                return "Dữ liệu không hợp lệ";
             }
 
             var existingUser = await _userManager.FindByEmailAsync(registerRequestDTO.UserName);
             if (existingUser != null)
             {
-                return ApiMessages.ERROR;
+                return "Email đã tồn tại";
+                
             }
 
             var identityUser = new User
@@ -40,10 +41,10 @@ namespace Booking_Movie_Tickets.Services
             var identityResult = await _userManager.CreateAsync(identityUser, registerRequestDTO.Password);
             if (!identityResult.Succeeded)
             {
-                return identityResult.Errors.Select(e => e.Description);
+                return identityResult.Errors.Select(e => e.Description).FirstOrDefault();
             }
 
-            return ApiMessages.SUCCESS;
+            return null;
         }
 
         public async Task<LoginResponseDTO> LoginAsync(LoginDTO loginRequestDTO)

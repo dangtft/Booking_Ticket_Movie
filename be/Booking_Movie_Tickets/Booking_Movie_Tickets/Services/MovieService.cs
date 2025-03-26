@@ -50,7 +50,9 @@ namespace Booking_Movie_Tickets.Services
                                         Title = reader["Title"]?.ToString() ?? "No Title",
                                         Nation = reader["Nation"]?.ToString() ?? "Unknown",
                                         Genres = new List<string>(),
-                                        ImageMovie = new List<string>()
+                                        ImageMovie = new List<string>(),
+                                        Status = reader["Status"]?.ToString() ?? "Unknown",
+                                        Rating = reader["Rating"] != DBNull.Value ? (float)reader["Rating"] : 0,
                                     };
 
                                     movieDict[movieId] = existingMovie;
@@ -128,6 +130,7 @@ namespace Booking_Movie_Tickets.Services
                     Nation = m.Nation,
                     Duration = m.Duration,
                     Rating = m.Rating,
+                    Status = m.Status,
                     ReleaseDate = m.ReleaseDate,
                     AgeRating = m.AgeRating != null
                         ? $"{m.AgeRating.RatingLabel} - {m.AgeRating.Description}"

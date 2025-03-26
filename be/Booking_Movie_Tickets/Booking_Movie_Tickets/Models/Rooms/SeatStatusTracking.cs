@@ -7,14 +7,12 @@ namespace Booking_Movie_Tickets.Models.Rooms
 {
     public class SeatStatusTracking
     {
-        [Key]
-        public Guid Id { get; set; }  
 
         [Required]
-        public Guid Seat_Id { get; set; }  
+        public Guid SeatId { get; set; }  
 
         [Required]
-        public Guid Show_Time_Id { get; set; }  
+        public Guid ShowTimeId { get; set; }  
 
         [Required]
         [StringLength(50)]
@@ -22,13 +20,12 @@ namespace Booking_Movie_Tickets.Models.Rooms
         public bool IsLocked { get; set; } = false;
         public string? LockedByUserId { get; set; }
         public DateTime? LockedAt { get; set; }
-        public DateTime Updated_At { get; set; } = DateTime.UtcNow;  
         public DateTime? ExpirationTime { get; set; }
 
-        [ForeignKey("Seat_Id")]
+        [ForeignKey("SeatId")]
         public Seat Seat { get; set; }
 
-        [ForeignKey("Show_Time_Id")]
+        [ForeignKey("ShowTimeId")]
         public Showtime Showtime { get; set; }
 
     }

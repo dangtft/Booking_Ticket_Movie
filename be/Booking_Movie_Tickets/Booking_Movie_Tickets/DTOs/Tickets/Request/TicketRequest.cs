@@ -12,9 +12,6 @@ namespace Booking_Movie_Tickets.DTOs.Tickets.Request
         public Guid SeatId { get; set; }
 
         [Required]
-        public Guid TicketTypeId { get; set; }
-
-        [Required]
         public decimal TicketPrice { get; set; }
         [Required]
         public Guid OrderDetailId { get; set; }

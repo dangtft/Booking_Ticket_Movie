@@ -17,7 +17,7 @@ namespace Booking_Movie_Tickets.Data
     {
         public BookingDbContext(DbContextOptions<BookingDbContext> options) : base(options) { }
 
-        public DbSet<SeatStatusTracking> SeatStatuses { get; set; }
+        public DbSet<SeatStatusTracking> SeatStatusTracking { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
@@ -37,7 +37,6 @@ namespace Booking_Movie_Tickets.Data
         public DbSet<SeatType> SeatTypes { get; set; }
         public DbSet<Showtime> Showtimes { get; set; }
         public DbSet<TicketStatus> TicketStatuses { get; set; }
-        public DbSet<TicketType> TicketTypes { get; set; }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<MovieActor> MovieActors { get; set; }
         public DbSet<OrderDetailExtras> OrderDetailExtras { get; set; }
@@ -54,6 +53,9 @@ namespace Booking_Movie_Tickets.Data
             modelBuilder.Entity<OrderDetailExtras>()
                 .HasKey(oe => new { oe.OrderDetailId, oe.ExtraId });
 
+            modelBuilder.Entity<SeatStatusTracking>()
+                .HasKey(oe => new { oe.SeatId, oe.ShowTimeId });
+
             modelBuilder.Entity<OrderDetailExtras>()
                 .HasOne(oe => oe.OrderDetail)
                 .WithMany(od => od.OrderDetailExtras)
@@ -68,20 +70,16 @@ namespace Booking_Movie_Tickets.Data
                 .Property(e => e.Price)
                 .HasPrecision(18, 2);
 
-
-            modelBuilder.Entity<TicketType>()
-                .Property(t => t.Discount)
-                .HasPrecision(18, 2);
             modelBuilder.Entity<SeatStatusTracking>()
                .HasOne(sst => sst.Seat)
                .WithMany()
-               .HasForeignKey(sst => sst.Seat_Id)
+               .HasForeignKey(sst => sst.SeatId)
                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<SeatStatusTracking>()
                 .HasOne(sst => sst.Showtime)
                 .WithMany()
-                .HasForeignKey(sst => sst.Show_Time_Id)
+                .HasForeignKey(sst => sst.ShowTimeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Cấu hình khóa chính cho MovieGenre 

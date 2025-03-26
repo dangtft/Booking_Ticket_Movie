@@ -4,6 +4,8 @@ using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Movies;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto;
+using AutoMapper;
 
 namespace Booking_Movie_Tickets.Services
 {
@@ -119,11 +121,22 @@ namespace Booking_Movie_Tickets.Services
         }
 
         // Lấy danh sách MovieMedia theo MovieId
-        public async Task<List<MovieMedia>> GetMovieMediaByMovieIdAsync(Guid movieId)
+        public async Task<List<MediaResponse?>> GetMovieMediaByMovieIdAsync(Guid movieId)
         {
-            return await _context.MovieMedias
-                .Where(m => m.MovieId == movieId && !m.IsDeleted)
+            var mediaList = await _context.MovieMedias
+                .Where(m => m.MovieId == movieId)
                 .ToListAsync();
+
+            var mediaResponseList = mediaList.Select(m => new MediaResponse
+            {
+                Id = m.Id,
+                MovieId = m.MovieId,
+                Description = m.Description,
+                MediaType = m.MediaType,
+                MediaURL = m.MediaURL
+            }).ToList();
+
+            return mediaResponseList;
         }
 
         // Thêm MovieMedia mới
