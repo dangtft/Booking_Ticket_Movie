@@ -1,6 +1,5 @@
 ﻿using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Users;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

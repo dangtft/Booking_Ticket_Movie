@@ -1,11 +1,8 @@
-﻿using Booking_Movie_Tickets.DTOs.Movies.Response;
-using Booking_Movie_Tickets.DTOs.Views;
-using Booking_Movie_Tickets.Models;
-using Booking_Movie_Tickets.Models.Cinemas;
+﻿using Booking_Movie_Tickets.Models;
+using Booking_Movie_Tickets.Models.Rooms;
 using Booking_Movie_Tickets.Models.Movies;
 using Booking_Movie_Tickets.Models.Orders;
 using Booking_Movie_Tickets.Models.Payments;
-using Booking_Movie_Tickets.Models.Rooms;
 using Booking_Movie_Tickets.Models.Tickets;
 using Booking_Movie_Tickets.Models.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

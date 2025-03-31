@@ -1,7 +1,5 @@
-﻿using Booking_Movie_Tickets.Configs;
+﻿using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.DTOs.Payment.VNPAY;
-using Booking_Movie_Tickets.Helper;
-using Booking_Movie_Tickets.Helper.ZaloPay;
 using Booking_Movie_Tickets.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +10,11 @@ namespace Booking_Movie_Tickets.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly IVnPayService _vnPayService;
-        private readonly IConfiguration _configuration;
-        public PaymentController(IVnPayService vpnPayService,IConfiguration configuration)
+        private readonly IOrderService _orderService;
+        public PaymentController(IVnPayService vpnPayService, IOrderService orderService)
         {
             _vnPayService = vpnPayService;
-            _configuration = configuration;
+            _orderService = orderService;
         }
 
         [HttpPost("url")]
@@ -29,29 +27,59 @@ namespace Booking_Movie_Tickets.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "Lỗi khi tạo URL thanh toán", detail = ex.Message });
+                return StatusCode(500, ApiMessages.EXTERNAL_SERVICE_ERROR);
             }
         }
 
-        [HttpGet("payment-execute")]
-        public IActionResult PaymentExecute()
+        [HttpGet("payment-callback")]
+        public async Task<IActionResult> PaymentCallBack()
         {
             try
             {
                 var response = _vnPayService.PaymentExcute(Request.Query);
-                return Ok(new
+
+                if (!Guid.TryParse(response.OrderId, out Guid orderGuid))
                 {
-                    success = response.Success,
-                    message = response.Message,
-                    data = response
-                });
+                    return BadRequest(ApiMessages.ERROR);
+                }
+
+                if (response.Success)
+                {
+                    await _orderService.UpdateOrderStatus(orderGuid, "Paid");
+                    return Ok(new { success = true, message = response.Message });
+                }
+                else
+                {
+                   // await _orderService.UpdateOrderStatus(orderGuid, "Pending");
+                    await _orderService.DeleteOrderById(orderGuid);
+
+                    return Ok(new { success = false, message = response.Message});
+                }
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "Lỗi xử lý thanh toán", detail = ex.Message });
+                return StatusCode(500, ApiMessages.EXTERNAL_SERVICE_ERROR);
             }
         }
 
+        [HttpGet("{orderId}/status")]
+        public async Task<IActionResult> GetOrderStatus(Guid orderId)
+        {
+            try
+            {
+                var status = await _orderService.GetOrderStatus(orderId);
+                if (status == null)
+                {
+                    return NotFound(ApiMessages.NOT_FOUND);
+                }
+
+                return Ok(new { success = true, status });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiMessages.EXTERNAL_SERVICE_ERROR);
+            }
+        }
 
     }
 }

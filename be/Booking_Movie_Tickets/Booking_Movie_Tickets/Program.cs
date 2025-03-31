@@ -1,20 +1,15 @@
-﻿using Booking_Movie_Tickets.Configs;
-using Booking_Movie_Tickets.Data;
-using Booking_Movie_Tickets.Helper;
+﻿using Booking_Movie_Tickets.Data;
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Users;
 using Booking_Movie_Tickets.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.Annotations;
-using Swashbuckle.AspNetCore;
 using System.Text;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,8 +44,6 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Booking API", Version = "v1" });
-    //options.EnableAnnotations();
-    //options.OperationFilter<FileUploadOperation>();
     options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -87,15 +80,17 @@ builder.Services.AddSession(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
+builder.Services.AddSignalR();
 // Cấu hình CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAnyOrigin", builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.AllowAnyOrigin()//WithOrigins("http://localhost:4200")//SetIsOriginAllowed(host => true)
             .AllowAnyHeader()
             .AllowAnyMethod();
-           // .AllowCredentials();
+            //.AllowCredentials();
+
     });
 });
 
@@ -135,6 +130,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddSingleton<IVnPayService, VnPayService>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
@@ -142,26 +138,29 @@ builder.Services.AddDistributedMemoryCache();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
+    c.DocumentTitle = "Booking Movie Tickets API";
+    c.InjectStylesheet("https://cdn.jsdelivr.net/npm/swagger-ui-themes/themes/3.x/theme-material.css");
+    //https://cdn.jsdelivr.net/npm/swagger-ui-themes/themes/3.x/theme-dark.css
+    //https://cdn.jsdelivr.net/npm/swagger-ui-themes/themes/3.x/theme-monokai.css
+    //https://cdn.jsdelivr.net/npm/swagger-ui-themes/themes/3.x/theme-flattop.css
+    //https://cdn.jsdelivr.net/npm/swagger-ui-themes/themes/3.x/theme-material.css
+    //https://cdn.jsdelivr.net/npm/swagger-ui-themes/themes/3.x/theme-muted.css
+    c.DisplayRequestDuration(); 
+    c.DefaultModelExpandDepth(2); 
+    c.DefaultModelRendering(Swashbuckle.AspNetCore.SwaggerUI.ModelRendering.Model);
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Booking API v1");
     c.OAuthUsePkce();
     c.OAuthAppName("Booking API");
     c.RoutePrefix = string.Empty;
 });
 
-//app.UseStaticFiles(new StaticFileOptions
-//{
-//    FileProvider = new PhysicalFileProvider(
-//        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
-//    RequestPath = "/uploads"
-//});
-
 app.UseHttpsRedirection();
 app.UseSession();
 app.UseCors("AllowAnyOrigin");
+//app.MapHub<PaymentHub>("/paymentHub");
 
 app.UseAuthentication();
 app.UseAuthorization();

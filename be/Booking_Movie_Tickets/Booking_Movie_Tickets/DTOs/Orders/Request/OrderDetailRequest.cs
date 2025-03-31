@@ -8,6 +8,6 @@ namespace Booking_Movie_Tickets.DTOs.Orders.Request
     {
         [Required]
         public List<OrderTicketRequest> TicketRequests { get; set; }
-        public List<OrderExtraRequest> Extras { get; set; } = new List<OrderExtraRequest>();
+        public List<OrderExtraRequest>? Extras { get; set; } = new List<OrderExtraRequest>();
     }
 }

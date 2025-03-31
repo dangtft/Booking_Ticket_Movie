@@ -4,6 +4,7 @@ using Booking_Movie_Tickets.DTOs.Others;
 
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Movies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking_Movie_Tickets.Controllers
@@ -56,6 +57,7 @@ namespace Booking_Movie_Tickets.Controllers
         }
 
         #region CRUD Movie
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddMovie([FromBody] MovieRequest request)
         {
@@ -66,7 +68,6 @@ namespace Booking_Movie_Tickets.Controllers
 
             var createdMovie = await _movieService.AddMovieAsync(request);
 
-            // 🛑 Kiểm tra nếu `createdMovie` null
             if (createdMovie == null || createdMovie.Id == Guid.Empty)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
@@ -78,7 +79,7 @@ namespace Booking_Movie_Tickets.Controllers
                 ApiResponse<Movie>.SuccessResponse(createdMovie, ApiMessages.CREATED_SUCCESS));
         }
 
-
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMovie(Guid id, [FromBody] MovieRequest request)
         {
@@ -98,6 +99,7 @@ namespace Booking_Movie_Tickets.Controllers
 
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(Guid id)
         {

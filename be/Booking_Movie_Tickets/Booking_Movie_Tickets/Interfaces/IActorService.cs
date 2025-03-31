@@ -1,12 +1,14 @@
-﻿using Booking_Movie_Tickets.Models.Movies;
+﻿using Booking_Movie_Tickets.DTOs.Actors.Response;
+using Booking_Movie_Tickets.DTOs.Others;
+using Booking_Movie_Tickets.Models.Movies;
 
 namespace Booking_Movie_Tickets.Interfaces
 {
     public interface IActorService
     {
-        Task<IEnumerable<Actor>> GetAllAsync();
-        Task<Actor?> GetByIdAsync(Guid actorId);
-        Task<IEnumerable<Actor>> GetByMovieIdAsync(Guid movieId);
+        Task<PagedResult<Actor>> GetAllAsync(PagedFilterBase filter);
+        Task<ActorDetailResponse?> GetByIdAsync(Guid actorId);
+        Task<IEnumerable<ActorResponse>> GetByMovieIdAsync(Guid movieId);
         Task<Actor> CreateAsync(Actor actor);
         Task<bool> UpdateAsync(Actor actor);
         Task<bool> DeleteAsync(Guid actorId);

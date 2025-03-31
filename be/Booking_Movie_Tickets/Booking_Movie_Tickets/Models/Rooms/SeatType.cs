@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Booking_Movie_Tickets.Models.Cinemas
+namespace Booking_Movie_Tickets.Models.Rooms
 {
     public class SeatType
     {

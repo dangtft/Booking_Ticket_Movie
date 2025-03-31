@@ -1,7 +1,9 @@
 ﻿using Booking_Movie_Tickets.DTOs.Extras.Request;
+using Booking_Movie_Tickets.DTOs.Extras.Response;
 using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Orders;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking_Movie_Tickets.Controllers
@@ -49,16 +51,15 @@ namespace Booking_Movie_Tickets.Controllers
                     return NoContent();
                 }
 
-                return Ok(new ApiResponse<Extra>(pagedResult));
+                return Ok(new ApiResponse<ExtraResponse>(pagedResult));
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse<string>(ApiMessages.ERROR));
             }
-            //var result = await _extraService.GetAllExtrasAsync(filter);
-            //return Ok(result);
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateExtra([FromBody] ExtraRequest extra)
         {
@@ -66,6 +67,7 @@ namespace Booking_Movie_Tickets.Controllers
             return CreatedAtAction(nameof(GetExtraById), new { id = createdExtra.Id }, createdExtra);
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateExtra(Guid id, [FromBody] ExtraRequest updatedExtra)
         {
@@ -74,6 +76,7 @@ namespace Booking_Movie_Tickets.Controllers
             return NoContent();
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExtra(Guid id)
         {

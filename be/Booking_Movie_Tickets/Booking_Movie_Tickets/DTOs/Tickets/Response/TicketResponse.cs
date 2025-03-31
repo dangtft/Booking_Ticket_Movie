@@ -6,17 +6,13 @@ namespace Booking_Movie_Tickets.DTOs.Tickets.Response
     {
         public Guid Id { get; set; }
 
-        public string? UserId { get; set; }
-
-        public Guid ShowTimeId { get; set; }
+        public DateOnly ShowTimeDate { get; set; }
+        public TimeOnly ShowTimeStart { get; set; }
+        public string SeatRow { get; set; }
+        public int SeatNumber { get; set; }
 
         public string QRCode { get; set; }
 
-        public Guid SeatId { get; set; }
-
-        public Guid TicketTypeId { get; set; }
-
-        public Guid TicketStatusId { get; set; }
         public decimal TicketPrice { get; set; }
     }
 }

@@ -8,5 +8,6 @@
         public decimal Price { get; set; }
         public Guid CategoryId { get; set; }
         public bool IsDeleted { get; set; }
+        public int Quantity { get; set; }
     }
 }

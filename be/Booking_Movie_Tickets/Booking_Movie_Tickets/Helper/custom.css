@@ -1,0 +1,13 @@
+﻿.swagger-ui .topbar {
+    background-color: #4CAF50 !important;
+}
+
+.swagger-ui .info {
+    font-size: 18px !important;
+    color: #333 !important;
+}
+
+.swagger-ui .opblock-summary {
+    background-color: #f4f4f4 !important;
+    border-radius: 5px;
+}

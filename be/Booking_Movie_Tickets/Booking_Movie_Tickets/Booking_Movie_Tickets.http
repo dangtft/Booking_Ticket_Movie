@@ -1,6 +1,5 @@
-@Booking_Movie_Tickets_HostAddress = http://localhost:5282
+@Booking_Movie_Tickets_HostAddress = http://localhost:5282/api
 
-GET {{Booking_Movie_Tickets_HostAddress}}/weatherforecast/
-Accept: application/json
-
+GET {{Booking_Movie_Tickets_HostAddress}}/movies
+Content-Type: application/json
 ###

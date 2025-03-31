@@ -4,6 +4,7 @@ using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Orders;
 using Booking_Movie_Tickets.Models.Tickets;
 using Booking_Movie_Tickets.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking_Movie_Tickets.Controllers
@@ -19,6 +20,7 @@ namespace Booking_Movie_Tickets.Controllers
             _ticketService = ticketService;
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost]
         public IActionResult CreateTicket([FromBody] TicketRequest request)
         {
@@ -31,6 +33,7 @@ namespace Booking_Movie_Tickets.Controllers
             return Ok(ticket);
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpGet("{ticketId}/qrcode")]
         public async Task<IActionResult> GetQRCode(Guid ticketId)
         {

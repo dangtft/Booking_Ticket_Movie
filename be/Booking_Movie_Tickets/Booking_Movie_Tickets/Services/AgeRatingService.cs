@@ -2,7 +2,6 @@
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Movies;
 using Microsoft.EntityFrameworkCore;
-using System;
 using Booking_Movie_Tickets.DTOs.Movies.Request;
 using Booking_Movie_Tickets.DTOs.Others;
 namespace Booking_Movie_Tickets.Services
@@ -24,43 +23,6 @@ namespace Booking_Movie_Tickets.Services
             {
                 var query = _context.AgeRatings.AsQueryable();
 
-                //if (!string.IsNullOrEmpty(filter.Key))
-                //{
-                //    var keyParts = filter.Key.Split(';');
-
-                //    foreach (var part in keyParts)
-                //    {
-                //        var segments = part.Split(':', 2);
-                //        if (segments.Length < 2) continue;
-
-                //        var type = segments[0].ToLower();
-                //        var value = segments[1];
-
-                //        switch (type)
-                //        {
-                //            case "search":
-                //                query = query.Where(m => EF.Functions.Like(m.RatingLabel, $"%{value}%") ||
-                //                                         EF.Functions.Like(m.Description, $"%{value}%"));
-                //                break;
-
-                //            case "sort":
-                //                var sortParts = value.Split(':');
-                //                if (sortParts.Length == 2)
-                //                {
-                //                    var field = sortParts[0].ToLower();
-                //                    var order = sortParts[1].ToLower();
-
-                //                    query = field switch
-                //                    {
-                //                        "name" => order == "asc" ? query.OrderBy(m => m.RatingLabel) : query.OrderByDescending(m => m.RatingLabel),
-                //                        _ => query
-                //                    };
-                //                }
-                //                break;
-                //        }
-                //    }
-                //}
-
                 var totalItems = await query.CountAsync();
 
                 var ageRatingData = await query
@@ -72,7 +34,9 @@ namespace Booking_Movie_Tickets.Services
                 {
                     Data = ageRatingData,
                     Page = filter.Page,
-                    PageSize = filter.PageSize
+                    PageSize = filter.PageSize,
+                    TotalCount = totalItems,
+                    TotalPages = (int)Math.Ceiling(totalItems / (double)filter.PageSize)
                 };
             }
             catch (Exception ex)

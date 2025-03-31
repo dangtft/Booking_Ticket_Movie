@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Booking_Movie_Tickets.Models.Cinemas;
+using Booking_Movie_Tickets.Models.Rooms;
 
 namespace Booking_Movie_Tickets.Models.Movies
 {

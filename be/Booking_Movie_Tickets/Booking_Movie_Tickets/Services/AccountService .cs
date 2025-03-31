@@ -1,6 +1,5 @@
 ﻿using Booking_Movie_Tickets.DTOs.Authentication.Request;
 using Booking_Movie_Tickets.DTOs.Authentication.Response;
-using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Users;
 using Microsoft.AspNetCore.Identity;
@@ -11,11 +10,13 @@ namespace Booking_Movie_Tickets.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly IEmailSender _emailSender;
 
-        public AccountService(UserManager<User> userManager, ITokenService tokenService)
+        public AccountService(UserManager<User> userManager, ITokenService tokenService,IEmailSender emailSender)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _emailSender = emailSender;
         }
 
         public async Task<object> RegisterAsync(RegisterDTO registerRequestDTO)
@@ -43,6 +44,13 @@ namespace Booking_Movie_Tickets.Services
             {
                 return identityResult.Errors.Select(e => e.Description).FirstOrDefault();
             }
+
+            //var token = await _userManager.GenerateEmailConfirmationTokenAsync(identityUser);
+            //var confirmationLink = $"https://localhost:7026/api/account/confirm-email?email={identityUser.Email}&token={Uri.EscapeDataString(token)}";
+
+            //// Gửi email xác nhận
+            //await _emailSender.SendEmailAsync(identityUser.Email, "Xác nhận Email",
+            //    $"Nhấp vào link để xác nhận email: <a href='{confirmationLink}'>Xác nhận</a>");
 
             return null;
         }
@@ -133,5 +141,25 @@ namespace Booking_Movie_Tickets.Services
             var result = await _userManager.UpdateAsync(user);
             return result.Succeeded;
         }
+
+        public async Task<UserInfoDTO> GetUserInfoByIdAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserInfoDTO
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FullName = user.FullName,
+                AvatarUrl = user.AvatarUrl,
+                PhoneNumber = user.PhoneNumber
+            };
+        }
+
     }
 }

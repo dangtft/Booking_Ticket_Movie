@@ -2,7 +2,6 @@
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Movies;
 using Microsoft.EntityFrameworkCore;
-using Azure.Core;
 using Booking_Movie_Tickets.DTOs.Movies.Request;
 using Booking_Movie_Tickets.DTOs.Others;
 
@@ -23,45 +22,7 @@ namespace Booking_Movie_Tickets.Services
         {
             var query = _context.Genres.AsQueryable();
 
-            //if (!string.IsNullOrEmpty(filter.Key))
-            //{
-            //    var keyParts = filter.Key.Split(';');
-
-            //    foreach (var part in keyParts)
-            //    {
-            //        var segments = part.Split(':', 2);
-            //        if (segments.Length < 2) continue;
-
-            //        var type = segments[0].ToLower();
-            //        var value = segments[1];
-
-            //        switch (type)
-            //        {
-            //            case "search":
-            //                query = query.Where(m => EF.Functions.Like(m.GenreName, $"%{value}%"));
-            //                break;
-
-            //            case "sort":
-            //                var sortParts = value.Split(':');
-            //                if (sortParts.Length == 2)
-            //                {
-            //                    var field = sortParts[0].ToLower();
-            //                    var order = sortParts[1].ToLower();
-
-            //                    bool isAscending = order == "asc" || order == "ascending";
-            //                    bool isDescending = order == "dsc" || order == "desc" || order == "descending";
-
-            //                    query = field switch
-            //                    {
-            //                        "name" => isAscending ? query.OrderBy(m => m.GenreName) :
-            //                                  isDescending ? query.OrderByDescending(m => m.GenreName) : query,
-            //                        _ => query
-            //                    };
-            //                }
-            //                break;
-            //        }
-            //    }
-            //}
+            var totalCount = await query.CountAsync();
 
             var genres = await query
                 .Skip((filter.Page - 1) * filter.PageSize)
@@ -72,7 +33,9 @@ namespace Booking_Movie_Tickets.Services
             {
                 Data = genres,
                 Page = filter.Page,
+                TotalCount = totalCount,
                 PageSize = filter.PageSize,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
             };
         }
 

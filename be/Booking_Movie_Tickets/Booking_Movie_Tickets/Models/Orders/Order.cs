@@ -13,8 +13,8 @@ namespace Booking_Movie_Tickets.Models.Orders
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }
-
         public bool IsDeleted { get; set; }
+        public string? Status { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [ForeignKey("UserId")]

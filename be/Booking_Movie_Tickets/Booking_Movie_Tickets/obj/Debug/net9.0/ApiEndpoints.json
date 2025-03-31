@@ -17,6 +17,22 @@
   },
   {
     "ContainingType": "Booking_Movie_Tickets.Controllers.AccountController",
+    "Method": "GetUserById",
+    "RelativePath": "api/account/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AccountController",
     "Method": "ChangePassword",
     "RelativePath": "api/account/change-password",
     "HttpMethod": "POST",
@@ -27,6 +43,27 @@
         "Name": "request",
         "Type": "Booking_Movie_Tickets.DTOs.Authentication.Request.ChangePasswordRequestDTO",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.AccountController",
+    "Method": "ConfirmEmail",
+    "RelativePath": "api/account/confirm-email",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "token",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -86,7 +123,28 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -276,38 +334,32 @@
   },
   {
     "ContainingType": "Booking_Movie_Tickets.Controllers.BookingController",
-    "Method": "CreateOrder",
-    "RelativePath": "api/bookings",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "Booking_Movie_Tickets.DTOs.Orders.Request.OrderRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Booking_Movie_Tickets.Controllers.BookingController",
-    "Method": "CleanupUnpaidOrders",
-    "RelativePath": "api/bookings/cleanup-unpaid",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Booking_Movie_Tickets.Controllers.BookingController",
     "Method": "GetSeatsByShowtime",
     "RelativePath": "api/bookings/seats/{showtimeId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      },
       {
         "Name": "showtimeId",
         "Type": "System.Guid",
@@ -324,6 +376,26 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      },
       {
         "Name": "movieId",
         "Type": "System.Guid",
@@ -765,9 +837,73 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.OrderController",
+    "Method": "GetTicketsByOrderId",
+    "RelativePath": "api/orders/{orderId}/tickets",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.OrderController",
+    "Method": "CreateOrder",
+    "RelativePath": "api/orders/create-order",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Booking_Movie_Tickets.DTOs.Orders.Request.OrderRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.OrderController",
+    "Method": "GetOrdersByUserId",
+    "RelativePath": "api/orders/user/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Booking_Movie_Tickets.Controllers.PaymentController",
-    "Method": "PaymentExecute",
-    "RelativePath": "api/payments/payment-execute",
+    "Method": "GetOrderStatus",
+    "RelativePath": "api/payments/{orderId}/status",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.PaymentController",
+    "Method": "PaymentCallBack",
+    "RelativePath": "api/payments/payment-callback",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -785,6 +921,42 @@
       {
         "Name": "model",
         "Type": "Booking_Movie_Tickets.DTOs.Payment.VNPAY.VnPaymentRequestModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Booking_Movie_Tickets.Controllers.SeatController",
+    "Method": "GetSeatsByMovieId",
+    "RelativePath": "api/seats/room/{roomId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "roomId",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],

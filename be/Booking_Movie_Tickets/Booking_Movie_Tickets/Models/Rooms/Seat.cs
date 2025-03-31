@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Sockets;
 
-namespace Booking_Movie_Tickets.Models.Cinemas
+namespace Booking_Movie_Tickets.Models.Rooms
 {
     public class Seat
     {

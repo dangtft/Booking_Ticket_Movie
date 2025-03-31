@@ -3,6 +3,8 @@ using Booking_Movie_Tickets.Models.Movies;
 using Microsoft.AspNetCore.Mvc;
 using Booking_Movie_Tickets.DTOs.Movies.Request;
 using Booking_Movie_Tickets.DTOs.Others;
+using Booking_Movie_Tickets.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Booking_Movie_Tickets.Controllers
 {
@@ -11,89 +13,90 @@ namespace Booking_Movie_Tickets.Controllers
     public class AgeRatingController : ControllerBase
     {
         private readonly IAgeRatingService _ageRatingService;
-        private readonly ILogger<AgeRatingController> _logger;
 
-        public AgeRatingController(IAgeRatingService ageRatingService, ILogger<AgeRatingController> logger)
+        public AgeRatingController(IAgeRatingService ageRatingService)
         {
             _ageRatingService = ageRatingService;
-            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAgeRatings([FromQuery] AgeRatingFilter filter)
         {
+            if (filter.Page < 1 || filter.PageSize < 1)
+            {
+                return BadRequest(new ApiResponse<string>(ApiMessages.INVALID_PAGINATION));
+            }
+
             try
             {
-                var result = await _ageRatingService.GetAllAgeRatingsAsync(filter);
-                return Ok(result);
+                var pagedResult = await _ageRatingService.GetAllAgeRatingsAsync(filter);
+
+                if (pagedResult == null || !pagedResult.Data.Any())
+                {
+                    return NoContent();
+                }
+
+                return Ok(new ApiResponse<AgeRating>(pagedResult));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse<string>(ApiMessages.ERROR));
             }
         }
-
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            _logger.LogInformation($"Lấy dữ liệu phân loại độ tuổi với ID: {id}");
             var ageRating = await _ageRatingService.GetAgeRatingByIdAsync(id);
             if (ageRating == null)
             {
-                _logger.LogWarning($"Không tìm thấy phân loại độ tuổi với ID: {id}");
-                return NotFound($"Không có phân loại độ tuổi nào được tìm thấy với ID: {id}");
+                return NotFound(ApiMessages.NOT_FOUND);
             }
             return Ok(ageRating);
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AgeRatingRequest ageRating)
         {
             if (ageRating == null)
             {
-                _logger.LogError("Dữ liệu phân loại độ tuổi không hợp lệ.");
-                return BadRequest("Dữ liệu không hợp lệ.");
+                return BadRequest(ApiMessages.INVALID_REQUEST);
             }
 
             var created = await _ageRatingService.AddAgeRatingAsync(ageRating);
-            _logger.LogInformation($"Phân loại độ tuổi mới đã được tạo với ID: {created.Id}");
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] AgeRatingRequest ageRating)
         {
             if (ageRating == null)
             {
-                _logger.LogError("Yêu cầu cập nhật phân loại độ tuổi không hợp lệ.");
-                return BadRequest("Dữ liệu không hợp lệ.");
+                return BadRequest(ApiMessages.INVALID_REQUEST);
             }
 
             var updated = await _ageRatingService.UpdateAgeRatingAsync(id, ageRating);
             if (updated == null)
             {
-                _logger.LogWarning($"Không tìm thấy phân loại độ tuổi để cập nhật với ID: {id}");
-                return NotFound($"Không tìm thấy phân loại độ tuổi với ID: {id}");
+                return NotFound(ApiMessages.NOT_FOUND);
             }
 
-            _logger.LogInformation($"Đã cập nhật phân loại độ tuổi với ID: {id}");
             return Ok(updated);
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            _logger.LogInformation($"Đang cố gắng xóa phân loại độ tuổi với ID: {id}");
             var deleted = await _ageRatingService.DeleteAgeRatingAsync(id);
             if (!deleted)
             {
-                _logger.LogWarning($"Xóa thất bại, không tìm thấy phân loại độ tuổi với ID: {id}");
-                return NotFound($"Không tìm thấy phân loại độ tuổi với ID: {id}");
+                return NotFound(ApiMessages.NOT_FOUND);
             }
 
-            _logger.LogInformation($"Đã xóa phân loại độ tuổi với ID: {id}");
-            return Ok($"Phân loại độ tuổi với ID {id} đã bị xóa.");
+            return Ok(ApiMessages.SUCCESS);
         }
     }
 }

@@ -23,92 +23,20 @@ namespace Booking_Movie_Tickets.Services
         {
             var query = _context.MovieMedias.Where(m => !m.IsDeleted).AsQueryable();
 
-            //if (!string.IsNullOrEmpty(filter.Key))
-            //{
-            //    var keyParts = filter.Key.Split(';');
-
-            //    foreach (var part in keyParts)
-            //    {
-            //        var segments = part.Split(':', 2);
-            //        if (segments.Length < 2) continue;
-
-            //        var type = segments[0].ToLower();
-            //        var value = segments[1];
-
-            //        switch (type)
-            //        {
-            //            case "search":
-            //                query = query.Where(m => EF.Functions.Like(m.MediaType, $"%{value}%"));
-            //                break;
-
-            //            case "sort":
-            //                var sortParts = value.Split(':');
-            //                if (sortParts.Length == 2)
-            //                {
-            //                    var field = sortParts[0].ToLower();
-            //                    var order = sortParts[1].ToLower();
-
-            //                    query = field switch
-            //                    {
-            //                        "type" => order == "asc" ? query.OrderBy(m => m.MediaType) : query.OrderByDescending(m => m.MediaType),
-            //                        _ => query
-            //                    };
-            //                }
-            //                break;
-            //        }
-            //    }
-            //}
+            var totalCount = await query.CountAsync();
 
             var mediaList = await query
                 .Skip((filter.Page - 1) * filter.PageSize)
                 .Take(filter.PageSize)
                 .ToListAsync();
 
-            //if (!string.IsNullOrEmpty(filter.Key))
-            //{
-            //    var keyParts = filter.Key.Split(';');
-
-            //    foreach (var part in keyParts)
-            //    {
-            //        var segments = part.Split(':', 2);
-            //        if (segments.Length < 2) continue;
-
-            //        var type = segments[0].ToLower();
-            //        var value = segments[1];
-
-            //        switch (type)
-            //        {
-            //            case "search":
-            //                query = query.Where(m => EF.Functions.Like(m.MediaType, $"%{value}%"));
-            //                break;
-
-            //            case "sort":
-            //                var sortParts = value.Split(':');
-            //                if (sortParts.Length == 2)
-            //                {
-            //                    var field = sortParts[0].ToLower();
-            //                    var order = sortParts[1].ToLower();
-
-            //                    bool isAscending = order == "asc" || order == "ascending";
-            //                    bool isDescending = order == "dsc" || order == "desc" || order == "descending";
-
-            //                    query = field switch
-            //                    {
-            //                        "type" => isAscending ? query.OrderBy(m => m.MediaType) :
-            //                                  isDescending ? query.OrderByDescending(m => m.MediaType) : query,
-            //                        _ => query
-            //                    };
-            //                }
-            //                break;
-            //        }
-            //    }
-            //}
-
             return new PagedResult<MovieMedia>
             {
                 Data = mediaList,
                 Page = filter.Page,
-                PageSize = filter.PageSize
+                TotalCount = totalCount,
+                PageSize = filter.PageSize,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize)
             };
         }
 

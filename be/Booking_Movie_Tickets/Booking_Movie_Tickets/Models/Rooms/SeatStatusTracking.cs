@@ -1,5 +1,4 @@
-﻿using Booking_Movie_Tickets.Models.Cinemas;
-using Booking_Movie_Tickets.Models.Movies;
+﻿using Booking_Movie_Tickets.Models.Movies;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 

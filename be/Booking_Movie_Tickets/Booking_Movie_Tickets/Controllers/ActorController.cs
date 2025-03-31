@@ -1,7 +1,11 @@
 ﻿using Booking_Movie_Tickets.DTOs.Actors;
+using Booking_Movie_Tickets.DTOs.Actors.Response;
+using Booking_Movie_Tickets.DTOs.Movies.Response;
 using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Movies;
+using Booking_Movie_Tickets.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking_Movie_Tickets.Controllers
@@ -18,10 +22,28 @@ namespace Booking_Movie_Tickets.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllActors()
+        public async Task<IActionResult> GetAllActors([FromQuery] PagedFilterBase filter)
         {
-            var actors = await _actorService.GetAllAsync();
-            return Ok(ApiResponse<IEnumerable<Actor>>.SuccessResponse(actors));
+            if (filter.Page < 1 || filter.PageSize < 1)
+            {
+                return BadRequest(new ApiResponse<string>(ApiMessages.INVALID_PAGINATION));
+            }
+
+            try
+            {
+                var pagedResult = await _actorService.GetAllAsync(filter);
+
+                if (pagedResult == null || !pagedResult.Data.Any())
+                {
+                    return NoContent();
+                }
+
+                return Ok(new ApiResponse<Actor>(pagedResult));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse<string>(ApiMessages.ERROR));
+            }
         }
 
         [HttpGet("{actorId}")]
@@ -30,7 +52,7 @@ namespace Booking_Movie_Tickets.Controllers
             var actor = await _actorService.GetByIdAsync(actorId);
             return actor == null
                 ? NotFound(ApiResponse<string>.ErrorResponse(ApiMessages.NOT_FOUND))
-                : Ok(ApiResponse<Actor>.SuccessResponse(actor, ApiMessages.SUCCESS));
+                : Ok(ApiResponse<ActorDetailResponse>.SuccessResponse(actor, ApiMessages.SUCCESS));
         }
 
         [HttpGet("movie/{movieId}")]
@@ -38,10 +60,11 @@ namespace Booking_Movie_Tickets.Controllers
         {
             var actors = await _actorService.GetByMovieIdAsync(movieId);
             return actors.Any()
-                ? Ok(ApiResponse<IEnumerable<Actor>>.SuccessResponse(actors, ApiMessages.SUCCESS))
+                ? Ok(ApiResponse<IEnumerable<ActorResponse>>.SuccessResponse(actors, ApiMessages.SUCCESS))
                 : NoContent();
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateActor([FromBody] Actor actor)
         {
@@ -52,6 +75,7 @@ namespace Booking_Movie_Tickets.Controllers
                 ApiResponse<Actor>.SuccessResponse(createdActor, ApiMessages.SUCCESS));
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("{actorId}")]
         public async Task<IActionResult> UpdateActor(Guid actorId, [FromBody] Actor actor)
         {
@@ -65,6 +89,7 @@ namespace Booking_Movie_Tickets.Controllers
                 : NotFound(ApiResponse<string>.ErrorResponse(ApiMessages.NOT_FOUND));
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpDelete("{actorId}")]
         public async Task<IActionResult> DeleteActor(Guid actorId)
         {

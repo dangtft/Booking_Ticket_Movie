@@ -10,5 +10,6 @@ namespace Booking_Movie_Tickets.Interfaces
         Task<bool> SaveSocialUserAsync(SocialUserDTO socialUserDto);
         Task<bool> ChangePasswordAsync(ChangePasswordRequestDTO request);
         Task<bool> UpdateUserInfoAsync(UpdateUserDTO updateUserDTO);
+        Task<UserInfoDTO> GetUserInfoByIdAsync(string userId);
     }
 }

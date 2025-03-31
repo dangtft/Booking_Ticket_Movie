@@ -30,6 +30,7 @@ namespace Booking_Movie_Tickets.Services
             vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán cho đon hàng:" + model.OrderId);
             vnpay.AddRequestData("vnp_OrderType", "other");
             vnpay.AddRequestData("vnp_ReturnUrl", _config["VnPay:ReturnURL"]);
+            //vnpay.AddRequestData("vnp_IpnUrl", _config["VnPay:IpnURL"]);
             vnpay.AddRequestData("vnp_TxnRef", tick);
 
             var paymentUrl = vnpay.CreateRequestUrl(_config["VnPay:BaseURL"], _config["VnPay:HashSecret"]);
@@ -49,11 +50,14 @@ namespace Booking_Movie_Tickets.Services
                 }
             }
 
-            var vnp_orderId = vnpay.GetResponseData("vnp_TxnRef");
+            //var vnp_orderId = vnpay.GetResponseData("vnp_TxnRef");
+            var vnp_OrderInfo = vnpay.GetResponseData("vnp_OrderInfo");
+            var extractedOrderId = ExtractOrderId(vnp_OrderInfo);
             var vnp_TransactionId = vnpay.GetResponseData("vnp_TransactionNo");
             var vnp_SecureHash = collections.FirstOrDefault(p => p.Key == "vnp_SecureHash").Value;
             var vnp_ResponseCode = vnpay.GetResponseData("vnp_ResponseCode");
-            var vnp_OrderInfo = vnpay.GetResponseData("vnp_OrderInfo");
+            var vnp_TransactionStatus = vnpay.GetResponseData("vnp_TransactionStatus");
+            //var vnp_OrderInfo = vnpay.GetResponseData("vnp_OrderInfo");
 
             bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, _config["VnPay:HashSecret"]);
 
@@ -66,14 +70,14 @@ namespace Booking_Movie_Tickets.Services
                 };
             }
 
-            if (vnp_ResponseCode == "00") 
+            if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00") 
             {
                 return new VnPaymentResponseModel
                 {
                     Success = true,
                     PaymentMethod = "VnPay",
                     OrderDescription = vnp_OrderInfo,
-                    OrderId = vnp_orderId,
+                    OrderId = extractedOrderId,
                     TransactionId = vnp_TransactionId,
                     Token = vnp_SecureHash,
                     VnPayResponseCode = vnp_ResponseCode,
@@ -86,12 +90,60 @@ namespace Booking_Movie_Tickets.Services
                 Success = false,
                 PaymentMethod = "VnPay",
                 OrderDescription = vnp_OrderInfo,
-                OrderId = vnp_orderId,
+                OrderId = extractedOrderId,
                 TransactionId = vnp_TransactionId,
                 Token = vnp_SecureHash,
                 VnPayResponseCode = vnp_ResponseCode,
-                Message = "Thanh toán không thành công"
+                Message = GetErrorMessage(vnp_ResponseCode, vnp_TransactionStatus)
             };
+        }
+        private string ExtractOrderId(string orderInfo)
+        {
+            if (string.IsNullOrEmpty(orderInfo)) return "";
+
+            var parts = orderInfo.Split(':');
+            if (parts.Length > 1)
+            {
+                return parts[1].Trim(); 
+            }
+
+            return "";
+        }
+
+        private string GetErrorMessage(string responseCode, string transactionStatus)
+        {
+            var errorMessages = new Dictionary<string, string>
+    {
+        { "02", "Mã định danh kết nối không hợp lệ (kiểm tra lại TmnCode)" },
+        { "03", "Dữ liệu gửi sang không đúng định dạng" },
+        { "91", "Không tìm thấy giao dịch yêu cầu" },
+        { "94", "Yêu cầu trùng lặp, duplicate request trong thời gian giới hạn của API" },
+        { "97", "Checksum không hợp lệ" },
+        { "99", "Lỗi không xác định, vui lòng thử lại" }
+    };
+
+            var transactionStatusMessages = new Dictionary<string, string>
+    {
+        { "01", "Giao dịch chưa hoàn tất" },
+        { "02", "Giao dịch bị lỗi" },
+        { "04", "Giao dịch đảo (Khách hàng đã bị trừ tiền tại Ngân hàng nhưng GD chưa thành công ở VNPAY)" },
+        { "05", "VNPAY đang xử lý giao dịch này (GD hoàn tiền)" },
+        { "06", "VNPAY đã gửi yêu cầu hoàn tiền sang Ngân hàng (GD hoàn tiền)" },
+        { "07", "Giao dịch bị nghi ngờ gian lận" },
+        { "09", "GD Hoàn trả bị từ chối" }
+    };
+
+            if (errorMessages.ContainsKey(responseCode))
+            {
+                return errorMessages[responseCode];
+            }
+
+            if (transactionStatusMessages.ContainsKey(transactionStatus))
+            {
+                return transactionStatusMessages[transactionStatus];
+            }
+
+            return "Lỗi không xác định, vui lòng liên hệ hỗ trợ.";
         }
 
     }

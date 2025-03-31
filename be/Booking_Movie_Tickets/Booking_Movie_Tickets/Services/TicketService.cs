@@ -1,8 +1,7 @@
 ﻿using Booking_Movie_Tickets.Data;
-using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.DTOs.Tickets.Request;
 using Booking_Movie_Tickets.Interfaces;
-using Booking_Movie_Tickets.Models.Cinemas;
+using Booking_Movie_Tickets.Models.Rooms;
 using Booking_Movie_Tickets.Models.Movies;
 using Booking_Movie_Tickets.Models.Tickets;
 using Microsoft.EntityFrameworkCore;
@@ -73,7 +72,8 @@ namespace Booking_Movie_Tickets.Services
                 SeatId = request.SeatId,
                 TicketStatusId = pendingStatus.Id,
                 TicketPrice = request.TicketPrice,
-                OrderDetailId = request.OrderDetailId
+                OrderDetailId = request.OrderDetailId,
+                CreatedAt = DateTime.Now
             };
 
             try
@@ -176,7 +176,8 @@ namespace Booking_Movie_Tickets.Services
                             $"Time: {showtime.Time}, " +
                             $"Hall: {showtime.Room.Name}, " +
                             $"Row: {seat.Row}, " +
-                            $"Seat: {seat.SeatNumber}";
+                            $"Seat: {seat.SeatNumber}"+
+                            $"CreatedAt: {ticket.CreatedAt}";
 
             var qrCodeWriter = new BarcodeWriterSvg
             {

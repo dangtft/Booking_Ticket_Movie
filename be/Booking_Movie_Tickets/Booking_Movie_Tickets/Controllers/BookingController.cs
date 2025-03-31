@@ -1,8 +1,8 @@
 ﻿using Booking_Movie_Tickets.DTOs.Movies.Response;
-using Booking_Movie_Tickets.DTOs.Orders.Request;
 using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.DTOs.Seats.Response;
 using Booking_Movie_Tickets.Interfaces;
+using Booking_Movie_Tickets.Models.Movies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking_Movie_Tickets.Controllers
@@ -12,55 +12,61 @@ namespace Booking_Movie_Tickets.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
-        private readonly IOrderService _orderService;
 
-        public BookingController(IBookingService bookingService, IOrderService orderService)
+        public BookingController(IBookingService bookingService)
         {
             _bookingService = bookingService;
-            _orderService = orderService;
         }
 
         [HttpGet("showtimes/{movieId}")]
-        public async Task<IActionResult> GetMovieShowtimes(Guid movieId)
+        public async Task<IActionResult> GetMovieShowtimes([FromQuery] PagedFilterBase filter, Guid movieId)
         {
-            var movieShowtime = await _bookingService.GetShowtimesByMovieId(movieId);
-
-            if (movieShowtime == null)
+            if (filter.Page < 1 || filter.PageSize < 1)
             {
-                return NotFound(ApiResponse<string>.ErrorResponse(ApiMessages.NOT_FOUND));
+                return BadRequest(new ApiResponse<string>(ApiMessages.INVALID_PAGINATION));
             }
 
-            return Ok(ApiResponse<List<ShowtimeResponse>>.SuccessResponse((List<ShowtimeResponse>)movieShowtime, ApiMessages.SUCCESS));
-        }
+            try
+            {
+                var pagedResult = await _bookingService.GetShowtimesByMovieId(filter, movieId);
 
+                if (pagedResult == null || !pagedResult.Data.Any())
+                {
+                    return NoContent();
+                }
+
+                return Ok(new ApiResponse<ShowtimeResponse>(pagedResult));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse<string>(ApiMessages.ERROR));
+            }
+        }
 
         [HttpGet("seats/{showtimeId}")]
-        public async Task<IActionResult> GetSeatsByShowtime(Guid showtimeId)
+        public async Task<IActionResult> GetSeatsByShowtime([FromQuery] PagedFilterBase filter, Guid showtimeId)
         {
-            var seats = await _bookingService.GetSeatsByShowtime(showtimeId);
-
-            if (seats == null || seats.Count == 0)
+            if (filter.Page < 1 || filter.PageSize < 1)
             {
-                return NotFound(ApiResponse<string>.ErrorResponse(ApiMessages.NOT_FOUND));
+                return BadRequest(new ApiResponse<string>(ApiMessages.INVALID_PAGINATION));
             }
 
-            return Ok(ApiResponse<List<SeatResponse>>.SuccessResponse(seats));
+            try
+            {
+                var pagedResult = await _bookingService.GetSeatsByShowtime(filter,showtimeId);
+
+                if (pagedResult == null || !pagedResult.Data.Any())
+                {
+                    return NoContent();
+                }
+
+                return Ok(new ApiResponse<SeatResponse>(pagedResult));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse<string>(ApiMessages.ERROR));
+            }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] OrderRequest request)
-        {
-            var result = await _orderService.CreateOrderAsync(request);
-            if (result)
-                return Ok(ApiMessages.SUCCESS);
-            return BadRequest(ApiMessages.ERROR);
-        }
-
-        [HttpPost("cleanup-unpaid")]
-        public async Task<IActionResult> CleanupUnpaidOrders()
-        {
-            await _orderService.CleanupUnpaidOrdersAsync();
-            return Ok(ApiMessages.SUCCESS);
-        }
     }
 }

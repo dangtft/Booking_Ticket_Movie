@@ -1,6 +1,8 @@
 ﻿using Booking_Movie_Tickets.DTOs.Others;
 using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Movies;
+using Booking_Movie_Tickets.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking_Movie_Tickets.Controllers
@@ -20,8 +22,26 @@ namespace Booking_Movie_Tickets.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMovieMedia([FromQuery] PagedFilterBase filter)
         {
-            var result = await _movieMediaService.GetAllMovieMediaAsync(filter);
-            return Ok(result);
+            if (filter.Page < 1 || filter.PageSize < 1)
+            {
+                return BadRequest(new ApiResponse<string>(ApiMessages.INVALID_PAGINATION));
+            }
+
+            try
+            {
+                var pagedResult = await _movieMediaService.GetAllMovieMediaAsync(filter);
+
+                if (pagedResult == null || !pagedResult.Data.Any())
+                {
+                    return NoContent();
+                }
+
+                return Ok(new ApiResponse<MovieMedia>(pagedResult));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse<string>(ApiMessages.ERROR));
+            }
         }
 
         // Lấy MovieMedia theo ID
@@ -30,7 +50,7 @@ namespace Booking_Movie_Tickets.Controllers
         {
             var media = await _movieMediaService.GetMovieMediaByIdAsync(id);
             if (media == null)
-                return NotFound("Không tìm thấy Media!");
+                return NotFound(ApiMessages.NOT_FOUND);
 
             return Ok(media);
         }
@@ -41,13 +61,14 @@ namespace Booking_Movie_Tickets.Controllers
         {
             var media = await _movieMediaService.GetMovieMediaByMovieIdAsync(movieId);
             if (media == null)
-                return NotFound("Không tìm thấy Media!");
+                return NotFound(ApiMessages.NOT_FOUND);
 
             return Ok(media);
         }
 
         #region CRUD
         // Thêm MovieMedia mới
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] MovieMedia media)
         {
@@ -55,29 +76,30 @@ namespace Booking_Movie_Tickets.Controllers
                 return BadRequest(ModelState);
 
             var createdMedia = await _movieMediaService.CreateMovieMediaAsync(media);
-            return CreatedAtAction(nameof(GetById), new { id = createdMedia.Id }, createdMedia);
+            return Ok(ApiMessages.CREATED_SUCCESS);
         }
 
-        // Cập nhật MovieMedia
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] MovieMedia media)
         {
             var updatedMedia = await _movieMediaService.UpdateMovieMediaAsync(id, media);
             if (updatedMedia == null)
-                return NotFound("Không tìm thấy Media để cập nhật!");
+                return NotFound(ApiMessages.NOT_FOUND);
 
-            return Ok(updatedMedia);
+            return Ok(ApiMessages.UPDATED_SUCCESS);
         }
 
         // Xóa MovieMedia
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var isDeleted = await _movieMediaService.DeleteMovieMediaAsync(id);
             if (!isDeleted)
-                return NotFound("Không tìm thấy Media để xóa!");
+                return NotFound(ApiMessages.NOT_FOUND);
 
-            return NoContent();
+            return Ok(ApiMessages.DELETED_SUCCESS);
         }
         #endregion
     }

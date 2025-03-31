@@ -4,6 +4,7 @@ using Booking_Movie_Tickets.Interfaces;
 using Booking_Movie_Tickets.Models.Orders;
 using Microsoft.EntityFrameworkCore;
 using Booking_Movie_Tickets.DTOs.Extras.Request;
+using Booking_Movie_Tickets.DTOs.Extras.Response;
 
 namespace Booking_Movie_Tickets.Services
 {
@@ -27,7 +28,7 @@ namespace Booking_Movie_Tickets.Services
             return extra?.Price ?? 0;
         }
 
-        public async Task<PagedResult<Extra>> GetAllExtrasAsync(PagedFilterBase filter)
+        public async Task<PagedResult<ExtraResponse>> GetAllExtrasAsync(PagedFilterBase filter)
         {
             var query = _context.Extras
                 .Where(e => !e.IsDeleted)
@@ -35,13 +36,12 @@ namespace Booking_Movie_Tickets.Services
                     _context.ExtrasCategories,  
                     e => e.CategoryId,
                     c => c.Id,
-                    (e, c) => new Extra
+                    (e, c) => new ExtraResponse
                     {
                         Id = e.Id,
                         Name = e.Name,
                         Description = e.Description,
                         Price = e.Price,
-                        CategoryId = e.CategoryId,
                         ImageURL = e.ImageURL
                     }
                 );
@@ -54,7 +54,7 @@ namespace Booking_Movie_Tickets.Services
                 .Take(filter.PageSize)
                 .ToListAsync();
 
-            return new PagedResult<Extra>
+            return new PagedResult<ExtraResponse>
             {
                 Data = extras,
                 Page = filter.Page,
